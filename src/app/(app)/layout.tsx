@@ -10,6 +10,25 @@ import users_light from "@/assets/users_light.png"
 import users_dark from "@/assets/users_dark.png"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+
+const pageName = (path: string) => {
+    switch (path.split('/')[1]) {
+        case "home":
+            return "Home"
+
+        case "signup":
+            return "Sign up an admin"
+
+        case "users":
+            return "View all users"
+
+        default:
+            return ""
+    }
+}
+
+
 
 export default function HomeLayout({
     children,
@@ -19,6 +38,7 @@ export default function HomeLayout({
 
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const pathname = usePathname()
 
     // Avoid Hydration Mismatch
     useEffect(() => {
@@ -33,18 +53,21 @@ export default function HomeLayout({
         <div>
             <header className="sidebar_menu flex flex-col" role="banner">
                 <h1 className="title">
-                    <Image
-                        id="twitsnap_logo"
-                        src={theme === "dark" ? twitsnap_dark : twitsnap_light}
-                        alt="Twitsnap logo"
-                    />
-                    <span>Back office</span>
+                    <div className="flex flex-row">
+                        <Image
+                            id="twitsnap_logo"
+                            src={theme === "dark" ? twitsnap_dark : twitsnap_light}
+                            alt="Twitsnap logo"
+                        />
+                        <span>Back office</span>
+                    </div>
+                    <label className="w-6/12 whitespace-nowrap truncate text-2xl">{pageName(pathname)}</label>
                     <label className="switch">
                         <input type="checkbox" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} />
-                        <span className="slider round display:block"/>
+                        <span className="slider round display:block" />
                     </label>
                 </h1>
-                <nav className="flex flex-col w-full">
+                <nav className="nav flex flex-col w-full">
                     <Link href={"/signup"} className="link">
                         <Image
                             id="signup_logo"
