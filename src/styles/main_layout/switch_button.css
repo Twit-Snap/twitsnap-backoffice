@@ -1,0 +1,70 @@
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 4rem;
+    height: 2.2rem;
+    margin-left: 1rem;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    align-content: start;
+    justify-content: start;
+    height: 1.75rem;
+    width: 1.75rem;
+    left: 0.3rem;
+    bottom: 0.3rem;
+    background-image: url("../../assets/sun_light.webp");
+    background-size: cover;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+[data-theme="dark"] {
+    .slider:before {
+        background-image: url("../../assets/moon_dark.webp");
+        background-size: cover;
+    }
+
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(1.625rem);
+    -ms-transform: translateX(1.625rem);
+    transform: translateX(1.625rem);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 2.125rem;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
