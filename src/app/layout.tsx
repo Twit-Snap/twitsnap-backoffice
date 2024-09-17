@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/styles/globals.css";
 import "@/styles/input_username.css"
-import "@/styles/layout.css"
+import "@/styles/main_layout/layout.css"
+import "@/styles/main_layout/switch_button.css"
+import ThemeProvider from "@/utils/theme_provider";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -25,12 +27,16 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+
+	//Suprimo warnings, recomendacion de la doc de next-themes. Dura una capa
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning={true}>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				{children}
+				<ThemeProvider>
+					{children}
+				</ThemeProvider>
 			</body>
 		</html>
 	);
