@@ -47,18 +47,20 @@
         background-size: cover;
     }
 
+    input+.slider:before {
+        -webkit-transform: translateX(1.625rem);
+        -ms-transform: translateX(1.625rem);
+        transform: translateX(1.625rem);
+    }
+
+    input+.slider {
+        background-color: #2196F3;
+    }
+
 }
 
-input:checked+.slider {
-    background-color: #2196F3;
-}
 
 
-input:checked+.slider:before {
-    -webkit-transform: translateX(1.625rem);
-    -ms-transform: translateX(1.625rem);
-    transform: translateX(1.625rem);
-}
 
 /* Rounded sliders */
 .slider.round {
