@@ -1,21 +1,14 @@
-.sidebar_menu {
-    height: 100vh;
-    width: 100vw;
-    position: fixed;
-    align-items: start;
-    justify-items: center;
-    padding-top: .5rem;
-    user-select: none;
-    z-index: 0;
+:read-only {
+    --title-height: 3.5rem;
 }
 
 .title {
-    height: 3.5rem;
+    height: var(--title-height);
     padding-right: 1rem;
     width: 100vw;
     vertical-align: middle;
     text-align: center;
-    line-height: 3.5rem;
+    line-height: var(--title-height);
     align-items: center;
     display: flex;
     flex-direction: row;
@@ -24,13 +17,25 @@
     font-size: 1.2rem;
     outline: none;
     justify-content: space-between;
+    padding-top: .5rem;
+}
+
+.nav,
+.title {
+    user-select: none;
+    z-index: 50;
+    position: fixed;
+}
+
+.nav,
+#main_content {
+    margin-top: var(--title-height);
+    height: calc(100vh - var(--title-height));
 }
 
 .nav {
-    height: 100%;
     width: 18vw;
     padding-top: 1rem;
-    border-right: rgb(163, 163, 163) 2px solid;
 }
 
 .link {
@@ -48,22 +53,15 @@
     font-size: 1.1rem;
     margin-left: 0.5rem;
     outline: none;
-}
-
-.link:hover {
     border-radius: 2rem;
-    background-color: rgba(197, 197, 197, 0.448);
 }
 
 #main_content {
     width: 82vw;
-    height: 89vh;
     position: absolute;
     margin-left: 18vw;
-    margin-top: 4rem;
-    z-index: 50;
+    z-index: 0;
 }
-
 
 .link_logo {
     margin-left: 1rem;
@@ -76,7 +74,6 @@
     margin-right: 1rem;
     margin-left: 0.5rem;
 }
-
 
 #signup_logo {
     width: 2rem;
@@ -91,25 +88,45 @@
 /* Theme colors */
 
 [data-theme="light"] {
-    .sidebar_menu {
+
+    .nav,
+    .title {
         color: black;
-        background-color: rgba(231, 231, 231, 0.576);
+        background-color: rgb(230, 230, 230)
+    }
+
+    .nav {
+        border-right: rgb(163, 163, 163) 2px solid;
     }
 
     .title {
         border-bottom: rgb(163, 163, 163) 2px solid;
         box-shadow: 0px 2px 0px 0px rgb(0 0 0 / 0.1);
     }
+
+    .link:hover {
+        background-color: rgb(202, 202, 202);
+    }
 }
 
 [data-theme="dark"] {
-    .sidebar_menu {
+
+    .nav,
+    .title {
         color: white;
-        background-color: rgb(36, 34, 34);
+        background-color: rgb(42, 41, 41);
+    }
+
+    .nav {
+        border-right: rgb(107, 103, 103) 2px solid;
     }
 
     .title {
-        border-bottom: rgb(163, 163, 163) 2px solid;
-        box-shadow: 0px 2px 0px 0px rgb(102, 102, 102);
+        border-bottom: rgb(107, 103, 103) 2px solid;
+        box-shadow: 0px 2px 0px 0px rgb(75, 73, 73);
+    }
+
+    .link:hover {
+        background-color: rgb(70, 70, 70);
     }
 }
