@@ -2,25 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-[data-theme="light"] {
-  :root {
-    --background: rgba(230, 230, 230, 0.229);
-    --foreground: black;
-  }
-}
-
-[data-theme="dark"] {
-  :root {
-    --background: rgba(28, 27, 34, 255);
-    --foreground: white;
-  }
-}
-
-html,
 body {
-  color: var(--foreground);
-  background-color: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+[data-theme="light"] body {
+  color: black;
+  background-color: rgb(245, 245, 245);
+}
+
+[data-theme="dark"] body {
+  color: white;
+  background-color: rgb(60, 60, 60);
 }
 
 @layer utilities {
