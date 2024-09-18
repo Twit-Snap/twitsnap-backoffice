@@ -8,97 +8,153 @@ import { themedStyleClass } from "@/utils/utils";
 
 const identificationAtom = atom("");
 const passwordAtom = atom("");
+const loginErrorAtom = atom("");
+const errorMessageAtom = atom("");
 
 const INPUT_MAX_LENGTH: number = 50;
-
-const handleSubmit = (e: any) => {
-	e.preventDefault();
-
-	const data: FormData = new FormData(e.target);
-
-	console.log(data.get("usernames"));
-};
 
 export default function SignUp() {
 	const [identification, setIdentification] = useAtom(identificationAtom);
 	const [password, setPassword] = useAtom(passwordAtom);
+	const [loginError, setLoginError] = useAtom(loginErrorAtom);
+	const [errorMessage, setErrorMessage] = useAtom(errorMessageAtom);
+
+	const handleSubmit = async (e: any) => {
+		e.preventDefault();
+
+		const form_data: FormData = new FormData(e.target);
+
+		await fetch("https://api.restful-api.dev/objects", {
+			method: "post",
+			headers: { "Content-type": "application/json" },
+			body: form_data,
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw { code: response.status };
+				}
+			})
+			.then((data) => {})
+			.catch((error) => {
+				if ((error.code & 400) === 400) {
+					setLoginError(`${form_input.error}`);
+					setErrorMessage("Incorrect password or email / username");
+				} else if ((error.code & 500) === 500) {
+					setLoginError(`${form_input.server_error}`);
+					setErrorMessage(
+						"Server error occurred, please try again later"
+					);
+				}
+			});
+	};
 
 	return (
-		<div id={styles.signup}>
-			{/* <Image src={logo} alt="asdas" width={70} height={70} /> */}
-			<form onSubmit={handleSubmit} className={`${form.form}`}>
-				<h1 className={form.title}>Welcome to TwitSnap Back Office!</h1>
-				<div className="space-y-8 flex flex-col place-items-center">
-					<h2 className={form.h2}>Login as administrator</h2>
-					<div
-						className={`${themedStyleClass(
-							form_input,
-							"textbox"
-						)} text-gray-400`}>
-						<input
-							className={themedStyleClass(form_input, "")}
-							id={form_input.input}
-							maxLength={INPUT_MAX_LENGTH}
-							type="text"
-							onChange={(e: any) =>
-								setIdentification(e.target.value)
-							}></input>
-						<label
-							id={form_input.placeholder}
-							className={`text-gray-400" + ${themedStyleClass(
-								form_input,
-								""
-							)} + ${
-								identification.length == 0
-									? ""
-									: ` ${themedStyleClass(form_input, "fill")}`
-							}`}>
-							Email, or user name
-						</label>
-						<label
-							id={form_input.len}
+		<div>
+			<div id={styles.signup}>
+				<form onSubmit={handleSubmit} className={`${form.form}`}>
+					<h1 className={form.title}>
+						Welcome to TwitSnap Back Office!
+					</h1>
+					<div className="space-y-8 flex flex-col place-items-center">
+						<h2 className={form.h2}>Login as administrator</h2>
+						<div
 							className={`${themedStyleClass(
 								form_input,
-								"len"
-							)}`}>{`${identification.length} / ${INPUT_MAX_LENGTH}`}</label>
+								"textbox"
+							)} text-gray-400 `}>
+							<input
+								name="identification"
+								className={`${themedStyleClass(
+									form_input,
+									""
+								)} ${loginError}`}
+								id={form_input.input}
+								maxLength={INPUT_MAX_LENGTH}
+								type="text"
+								onChange={(e: any) => {
+									console.log(loginError);
+									if (loginError) {
+										setLoginError("");
+									}
+									setIdentification(e.target.value);
+								}}></input>
+							<label
+								id={form_input.placeholder}
+								className={`text-gray-400" + ${themedStyleClass(
+									form_input,
+									""
+								)} + ${
+									identification.length == 0
+										? ""
+										: ` ${themedStyleClass(
+												form_input,
+												"fill"
+										  )}`
+								} ${loginError}`}>
+								Email, or user name
+							</label>
+							<label
+								id={form_input.len}
+								className={`${themedStyleClass(
+									form_input,
+									"len"
+								)} ${loginError}`}>{`${identification.length} / ${INPUT_MAX_LENGTH}`}</label>
+						</div>
+						<div className="text-center">
+							<div
+								className={`${themedStyleClass(
+									form_input,
+									"textbox"
+								)} text-gray-400`}>
+								<input
+									name="password"
+									className={`${themedStyleClass(
+										form_input,
+										""
+									)} ${loginError}`}
+									id={form_input.input}
+									type="password"
+									maxLength={INPUT_MAX_LENGTH}
+									onChange={(e: any) => {
+										if (loginError) {
+											setLoginError("");
+										}
+										setPassword(e.target.value);
+									}}></input>
+								<label
+									id={form_input.placeholder}
+									className={`text-gray-400" + ${themedStyleClass(
+										form_input,
+										""
+									)} + ${
+										password.length == 0
+											? ""
+											: ` ${themedStyleClass(
+													form_input,
+													"fill"
+											  )}`
+									}`}>
+									Password
+								</label>
+								<label
+									id={form_input.len}
+									className={`${themedStyleClass(
+										form_input,
+										"len"
+									)}`}>{`${password.length} / ${INPUT_MAX_LENGTH}`}</label>
+							</div>
+							<label
+								id={form_input.error_label}
+								className={`${loginError} place-self-center`}>
+								{errorMessage}
+							</label>
+						</div>
 					</div>
-					<div
-						className={`${themedStyleClass(
-							form_input,
-							"textbox"
-						)} text-gray-400`}>
-						<input
-							className={themedStyleClass(form_input, "")}
-							id={form_input.input}
-							type="password"
-							maxLength={INPUT_MAX_LENGTH}
-							onChange={(e: any) =>
-								setPassword(e.target.value)
-							}></input>
-						<label
-							id={form_input.placeholder}
-							className={`text-gray-400" + ${themedStyleClass(
-								form_input,
-								""
-							)} + ${
-								password.length == 0
-									? ""
-									: ` ${themedStyleClass(form_input, "fill")}`
-							}`}>
-							Password
-						</label>
-						<label
-							id={form_input.len}
-							className={`${themedStyleClass(
-								form_input,
-								"len"
-							)}`}>{`${password.length} / ${INPUT_MAX_LENGTH}`}</label>
-					</div>
-				</div>
-				<button type="submit" className={`${form.submit} `}>
-					Submit
-				</button>
-			</form>
+					<button type="submit" className={`${form.submit} `}>
+						Submit
+					</button>
+				</form>
+			</div>
 		</div>
 	);
 }

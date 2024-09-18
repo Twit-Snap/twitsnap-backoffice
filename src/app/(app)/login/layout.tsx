@@ -25,9 +25,11 @@ export default function HomeLayout({
 	return (
 		<div>
 			<header
-				className={`${themedStyleClass(styles, "banner")} flex place-items-center `}
-				role="banner"
-			>
+				className={`${themedStyleClass(
+					styles,
+					"banner"
+				)} flex place-items-center `}
+				role="banner">
 				<Image src={logo} alt="TwitSnap logo" />
 			</header>
 			<main className={themedStyleClass(styles, "login")}>
