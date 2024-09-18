@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/styles/globals.css";
-import "@/styles/input_username.css"
-import "@/styles/main_layout/layout.css"
-import "@/styles/main_layout/switch_button.css"
-import ThemeProvider from "@/utils/theme_provider";
-import Head from "next/head";
+import "@/styles/main_layout/layout.css";
+import { Providers } from "./providers";
+import "@/styles/main_layout/switch_button.css";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -24,7 +22,7 @@ export const metadata: Metadata = {
 	icons: {
 		icon: [
 			{
-				url: "../assets/icon.ico"
+				url: "../assets/icon.ico",
 			},
 		],
 	},
@@ -35,16 +33,13 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-
 	//Suprimo warnings, recomendacion de la doc de next-themes. Dura una capa
 	return (
 		<html lang="en" suppressHydrationWarning={true}>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<ThemeProvider>
-					{children}
-				</ThemeProvider>
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);
