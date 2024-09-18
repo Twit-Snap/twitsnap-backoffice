@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "@/styles/globals.css";
 import "@/styles/main_layout/layout.css";
-import { Providers } from "./providers";
 import "@/styles/main_layout/switch_button.css";
 import "@/styles/constants.css";
 
@@ -39,7 +38,7 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning={true}>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				<Providers>{children}</Providers>
+				{children}
 			</body>
 		</html>
 	);
