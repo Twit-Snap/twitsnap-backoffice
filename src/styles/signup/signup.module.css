@@ -1,7 +1,7 @@
 #signup {
-    height: calc(100vh - var(--title-height));
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    place-items: center;
+	height: calc(100vh - var(--title-height));
+	display: flex;
+	flex-direction: column;
+	padding: 1rem;
+	place-items: center;
 }

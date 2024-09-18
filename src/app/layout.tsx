@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import "@/styles/main_layout/layout.css";
 import { Providers } from "./providers";
 import "@/styles/main_layout/switch_button.css";
+import "@/styles/constants.css";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -37,8 +38,7 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning={true}>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
+				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<Providers>{children}</Providers>
 			</body>
 		</html>

@@ -3,21 +3,21 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 html.light body {
-  color: black;
-  background-color: rgb(245, 245, 245);
+	color: black;
+	background-color: rgba(134, 131, 131, 0.089);
 }
 
 html.dark body {
-  color: white;
-  background-color: rgb(60, 60, 60);
+	color: white;
+	background-color: #25252b;
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+	.text-balance {
+		text-wrap: balance;
+	}
 }
