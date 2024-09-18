@@ -1,0 +1,28 @@
+.banner {
+	width: 50vw;
+	height: 100vh;
+	position: fixed;
+	place-content: center;
+	user-select: none;
+}
+
+.login {
+	width: 50vw;
+	height: 100vh;
+	position: fixed;
+	place-content: center;
+	left: 50vw;
+	top: var(--title-height);
+}
+
+.banner,
+.login {
+	background-color: rgba(134, 131, 131, 0.089);
+}
+
+.dark {
+	.banner,
+	.login {
+		background-color: #25252b
+	}
+}
