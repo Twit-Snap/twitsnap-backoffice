@@ -53,7 +53,7 @@ export default function SignUp() {
 									? ""
 									: ` ${themedStyleClass(form_input, "fill")}`
 							}`}>
-							Emal, or user name
+							Email, or user name
 						</label>
 						<label
 							id={form_input.len}
