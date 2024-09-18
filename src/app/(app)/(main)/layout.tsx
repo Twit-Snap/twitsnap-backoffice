@@ -27,25 +27,25 @@ export default function HomeLayout({
     children: React.ReactNode
 }) {
 
-    const { theme } = useTheme();
+    const { resolvedTheme } = useTheme();
     const pathname = usePathname()
 
     return (
         <div>
             <nav className="nav flex flex-col space-y-2">
-                <Link href={"/signup"} className={`link ${isSelectedPage(pathname, "signup", theme)}`}>
+                <Link href={"/signup"} className={`link ${isSelectedPage(pathname, "signup", resolvedTheme)}`}>
                     <Image
                         id="signup_logo"
-                        src={theme === "dark" ? signup_dark : signup_light}
+                        src={resolvedTheme === "dark" ? signup_dark : signup_light}
                         alt="Sign Up an admin logo"
                         className="link_logo"
                     />
                     <span>Sign up an admin</span>
                 </Link>
-                <Link href={"/users"} className={`link ${isSelectedPage(pathname, "users", theme)}`}>
+                <Link href={"/users"} className={`link ${isSelectedPage(pathname, "users", resolvedTheme)}`}>
                     <Image
                         id="users_logo"
-                        src={theme === "dark" ? users_dark : users_light}
+                        src={resolvedTheme === "dark" ? users_dark : users_light}
                         alt="View all users logo"
                         className="link_logo"
                     />
