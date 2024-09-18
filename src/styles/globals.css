@@ -6,12 +6,7 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 }
 
-html.light body {
-	color: black;
-	background-color: rgba(134, 131, 131, 0.089);
-}
-
-html.dark body {
+body {
 	color: white;
 	background-color: #25252b;
 }

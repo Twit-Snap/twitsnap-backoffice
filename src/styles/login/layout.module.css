@@ -17,12 +17,5 @@
 
 .banner,
 .login {
-	background-color: rgba(134, 131, 131, 0.089);
-}
-
-.dark {
-	.banner,
-	.login {
-		background-color: #25252b
-	}
+	background-color: #25252b;
 }
