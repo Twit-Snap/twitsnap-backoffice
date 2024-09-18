@@ -1,0 +1,23 @@
+.title {
+	font-size: 2.25rem;
+	line-height: 2.5rem;
+}
+
+.submit {
+	background-color: #0dabec;
+	color: black;
+	border-radius: 2rem;
+	font-size: 22px;
+	width: 20rem;
+	height: 3rem;
+	pointer-events: all;
+	z-index: 49;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 70vh;
+	justify-content: space-between;
+}
