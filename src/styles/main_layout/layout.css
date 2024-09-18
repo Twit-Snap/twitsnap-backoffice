@@ -1,132 +1,136 @@
 :read-only {
-    --title-height: 3.5rem;
+	--title-height: 3.5rem;
 }
 
 .title {
-    height: var(--title-height);
-    padding-right: 1rem;
-    width: 100vw;
-    vertical-align: middle;
-    text-align: center;
-    line-height: var(--title-height);
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-weight: 800;
-    font-size: 1.2rem;
-    outline: none;
-    justify-content: space-between;
-    padding-top: .5rem;
+	height: var(--title-height);
+	padding-right: 1rem;
+	width: 100vw;
+	vertical-align: middle;
+	text-align: center;
+	line-height: var(--title-height);
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+	font-weight: 800;
+	font-size: 1.2rem;
+	outline: none;
+	justify-content: space-between;
+	padding-top: 0.5rem;
 }
 
 .nav,
 .title {
-    user-select: none;
-    z-index: 50;
-    position: fixed;
+	user-select: none;
+	z-index: 50;
+	position: fixed;
 }
 
 .nav,
 #main_content {
-    margin-top: var(--title-height);
-    height: calc(100vh - var(--title-height));
+	margin-top: var(--title-height);
+	height: calc(100vh - var(--title-height));
 }
 
 .nav {
-    width: 18vw;
-    padding-top: 1rem;
+	width: 18vw;
+	padding-top: 1rem;
 }
 
 .link {
-    height: 3rem;
-    padding-right: 1rem;
-    width: max-content;
-    vertical-align: middle;
-    text-align: center;
-    line-height: 3rem;
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-left: 0.5rem;
-    outline: none;
-    border-radius: 2rem;
+	height: 3rem;
+	padding-right: 1rem;
+	width: max-content;
+	vertical-align: middle;
+	text-align: center;
+	line-height: 3rem;
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+	font-weight: 600;
+	font-size: 1.1rem;
+	margin-left: 0.5rem;
+	outline: none;
+	border-radius: 2rem;
 }
 
 #main_content {
-    width: 82vw;
-    position: absolute;
-    margin-left: 18vw;
-    z-index: 0;
+	width: 82vw;
+	position: absolute;
+	margin-left: 18vw;
+	z-index: 0;
 }
 
 .link_logo {
-    margin-left: 1rem;
-    margin-right: 1rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
 }
 
 #twitsnap_logo {
-    width: 3rem;
-    height: 3rem;
-    margin-right: 1rem;
-    margin-left: 0.5rem;
+	width: 3rem;
+	height: 3rem;
+	margin-right: 1rem;
+	margin-left: 0.5rem;
 }
 
 #signup_logo {
-    width: 2rem;
-    height: 2rem;
+	width: 2rem;
+	height: 2rem;
 }
 
 #users_logo {
-    width: 2rem;
-    height: 2rem;
+	width: 2rem;
+	height: 2rem;
 }
 
 /* Theme colors */
 
-[data-theme="light"] {
+.nav,
+.title {
+	color: black;
+	background-color: rgb(230, 230, 230);
+}
 
-    .nav,
-    .title {
-        color: black;
-        background-color: rgb(230, 230, 230)
-    }
+.nav {
+	border-right: rgb(163, 163, 163) 2px solid;
+}
 
-    .nav {
-        border-right: rgb(163, 163, 163) 2px solid;
-    }
+.title {
+	border-bottom: rgb(163, 163, 163) 2px solid;
+	box-shadow: 0px 2px 0px 0px rgb(0 0 0 / 0.1);
+}
 
-    .title {
-        border-bottom: rgb(163, 163, 163) 2px solid;
-        box-shadow: 0px 2px 0px 0px rgb(0 0 0 / 0.1);
-    }
+.link:hover {
+	background-color: rgb(202, 202, 202);
+}
 
-    .link:hover {
-        background-color: rgb(202, 202, 202);
-    }
+#main_content {
+	background-color: rgba(134, 131, 131, 0.089);
 }
 
 [data-theme="dark"] {
+	.nav,
+	.title {
+		color: white;
+		background-color: rgb(42, 41, 41);
+	}
 
-    .nav,
-    .title {
-        color: white;
-        background-color: rgb(42, 41, 41);
-    }
+	.nav {
+		border-right: rgb(107, 103, 103) 2px solid;
+	}
 
-    .nav {
-        border-right: rgb(107, 103, 103) 2px solid;
-    }
+	.title {
+		border-bottom: rgb(107, 103, 103) 2px solid;
+		box-shadow: 0px 2px 0px 0px rgb(75, 73, 73);
+	}
 
-    .title {
-        border-bottom: rgb(107, 103, 103) 2px solid;
-        box-shadow: 0px 2px 0px 0px rgb(75, 73, 73);
-    }
+	.link:hover {
+		background-color: rgb(70, 70, 70);
+	}
 
-    .link:hover {
-        background-color: rgb(70, 70, 70);
-    }
+	#main_content {
+		background-color: rgba(180, 167, 167, 0.224);
+	}
 }
