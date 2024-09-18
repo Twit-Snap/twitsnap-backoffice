@@ -1,93 +1,93 @@
 .textbox {
-    position: relative;
+	position: relative;
 }
 
 #input {
-    height: 3.5rem;
-    width: 30rem;
-    padding: 0.5rem;
-    padding-top: 1.5rem;
-    outline: none;
-    border-radius: .5rem;
+	height: 3.5rem;
+	width: 30rem;
+	padding: 0.5rem;
+	padding-top: 1.5rem;
+	outline: none;
+	border-radius: 0.5rem;
 }
 
 #placeholder {
-    position: absolute;
-    left: 0.5rem;
-    top: 0.75rem;
-    font-size: 20px;
-    text-align: center;
-    pointer-events: none;
-    transition: all .2s ease-in-out;
-    border-radius: .5rem;
-    text-rendering: optimizeLegibility;
+	position: absolute;
+	left: 0.5rem;
+	top: 0.75rem;
+	font-size: 20px;
+	text-align: center;
+	pointer-events: none;
+	transition: all 0.2s ease-in-out;
+	border-radius: 0.5rem;
+	text-rendering: optimizeLegibility;
 }
 
 #len {
-    position: absolute;
-    left: 26.95rem;
-    top: 0.25rem;
-    text-align: center;
-    font-size: 14px;
-    pointer-events: none;
-    transition: all .2s ease-in-out;
-    opacity: 0;
-    text-rendering: optimizeLegibility;
+	position: absolute;
+	left: 26.95rem;
+	top: 0.25rem;
+	text-align: center;
+	font-size: 14px;
+	pointer-events: none;
+	transition: all 0.2s ease-in-out;
+	opacity: 0;
+	text-rendering: optimizeLegibility;
 }
 
 #input:focus {
-    border: 2px solid rgb(32, 156, 244);
+	border: 2px solid rgb(32, 156, 244);
 }
 
-#input:focus+#placeholder {
-    position: absolute;
-    left: 0rem;
-    top: 0rem;
-    padding-left: .4rem;
-    font-size: 20px;
-    transform: scale(0.8);
-    transform-origin: 1rem;
-    color: rgb(32, 156, 244);
+#input:focus + #placeholder {
+	position: absolute;
+	left: 0rem;
+	top: 0rem;
+	padding-left: 0.4rem;
+	font-size: 20px;
+	transform: scale(0.8);
+	transform-origin: 1rem;
+	color: rgb(32, 156, 244);
 }
 
-#input:focus+#placeholder+#len {
-    opacity: 1;
+#input:focus + #placeholder + #len {
+	opacity: 1;
 }
 
-#input+.fill {
-    position: absolute;
-    left: 0rem;
-    top: 0rem;
-    padding-left: .4rem;
-    font-size: 20px;
-    transform: scale(0.8);
-    transform-origin: 1rem;
+#input + .fill {
+	position: absolute;
+	left: 0rem;
+	top: 0rem;
+	padding-left: 0.4rem;
+	font-size: 20px;
+	transform: scale(0.8);
+	transform-origin: 1rem;
+}
+
+#error_label {
+	opacity: 0;
+	color: red;
+	font-size: 1.2rem;
+	font-weight: 500;
+}
+
+.error#input {
+	border: 2px solid rgb(255, 95, 95);
+}
+
+.server_error#error_label,
+.error#error_label {
+	opacity: 1;
 }
 
 #input,
 #len,
 #placeholder,
 .fill {
-    background-color: white;
+	background-color: black;
 }
 
 #input {
-    border: 1px solid black;
-    color: black
-}
-
-.dark {
-
-    #input,
-    #len,
-    #placeholder,
-    .fill {
-        background-color: black;
-    }
-
-    #input {
-        border: 1px solid rgb(153, 153, 153);
-        color: white
-    }
-
+	border: 1px solid rgb(153, 153, 153);
+	color: white;
 }
