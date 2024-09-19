@@ -3,6 +3,9 @@
 import Image from "next/image";
 import twitsnap_light from "@/assets/logo_light.png";
 import twitsnap_dark from "@/assets/logo_dark.png";
+import { useAtomValue } from "jotai";
+import { authenticatedAtom } from "../../../types/authTypes";
+import { redirect } from "next/navigation";
 
 export default function HomeLayout({
 	children,

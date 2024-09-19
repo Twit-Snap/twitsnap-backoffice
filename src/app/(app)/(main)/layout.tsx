@@ -6,7 +6,9 @@ import signup_light from "@/assets/signup_light.png";
 import signup_dark from "@/assets/signup_dark.png";
 import users_light from "@/assets/users_light.png";
 import users_dark from "@/assets/users_dark.png";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
+import { useAtomValue } from "jotai";
+import { authenticatedAtom } from "../../../../types/authTypes";
 
 const isSelectedPage = (path: string, expected: string) => {
 	if (path.split("/")[1] !== expected) {
@@ -22,6 +24,10 @@ export default function HomeLayout({
 	children: React.ReactNode;
 }) {
 	const pathname = usePathname();
+
+	// if (!useAtomValue(authenticatedAtom)) {
+	// 	redirect("/login");
+	// }
 
 	return (
 		<div>
