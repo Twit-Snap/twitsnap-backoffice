@@ -66,13 +66,19 @@
 
 #error_label {
 	opacity: 0;
-	color: red;
+	color: rgb(255, 75, 75);
 	font-size: 1.2rem;
 	font-weight: 500;
 }
 
 .error#input {
 	border: 2px solid rgb(255, 95, 95);
+}
+
+.error.fill,
+.error#placeholder {
+	transition: none;
+	color: rgb(255, 95, 95);
 }
 
 .server_error#error_label,
