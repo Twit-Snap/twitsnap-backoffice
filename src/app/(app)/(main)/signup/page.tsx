@@ -9,7 +9,6 @@ import logo from "@/assets/icon.ico";
 
 const usernameAtom = atom("");
 const emailAtom = atom("");
-const nameAtom = atom("");
 const passwordAtom = atom("");
 const passwordAltAtom = atom("");
 
@@ -26,7 +25,6 @@ const handleSubmit = (e: any) => {
 export default function SignUp() {
 	const [username, setUserName] = useAtom(usernameAtom);
 	const [email, setEmail] = useAtom(emailAtom);
-	const [name, setName] = useAtom(nameAtom);
 	const [password, setPassword] = useAtom(passwordAtom);
 	const [passwordAlt, setPasswordAlt] = useAtom(passwordAltAtom);
 
@@ -74,24 +72,6 @@ export default function SignUp() {
 						<label
 							id={form_input.len}
 							className={`${form_input.len}`}>{`${email.length} / ${INPUT_MAX_LENGTH}`}</label>
-					</div>
-					<div className={`${form_input.textbox} text-gray-400`}>
-						<input
-							id={form_input.input}
-							maxLength={INPUT_MAX_LENGTH}
-							onChange={(e: any) =>
-								setName(e.target.value)
-							}></input>
-						<label
-							id={form_input.placeholder}
-							className={`text-gray-400 ${
-								name.length == 0 ? "" : ` ${form_input.fill}`
-							}`}>
-							Name
-						</label>
-						<label
-							id={form_input.len}
-							className={`${form_input.len}`}>{`${name.length} / ${INPUT_MAX_LENGTH}`}</label>
 					</div>
 					<div className={`${form_input.textbox} text-gray-400`}>
 						<input
