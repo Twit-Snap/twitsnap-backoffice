@@ -62,9 +62,9 @@ export default function SignUp() {
 								className={`${loginError}`}
 								id={form_input.input}
 								maxLength={INPUT_MAX_LENGTH}
+								required={true}
 								type="text"
 								onChange={(e: any) => {
-									console.log(loginError);
 									if (loginError) {
 										setLoginError("");
 									}
@@ -92,6 +92,7 @@ export default function SignUp() {
 									id={form_input.input}
 									type="password"
 									maxLength={INPUT_MAX_LENGTH}
+									required={true}
 									onChange={(e: any) => {
 										if (loginError) {
 											setLoginError("");
@@ -104,7 +105,7 @@ export default function SignUp() {
 										password.length == 0
 											? ""
 											: ` ${form_input.fill}`
-									}`}>
+									} ${loginError}`}>
 									Password
 								</label>
 								<label
