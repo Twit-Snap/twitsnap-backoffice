@@ -53,7 +53,9 @@
 }
 
 #main_content {
-	width: 82vw;
+	min-width: 82vw;
+	max-width: 82vw;
+	overflow-x: hidden;
 	position: absolute;
 	margin-left: 18vw;
 	z-index: 0;
