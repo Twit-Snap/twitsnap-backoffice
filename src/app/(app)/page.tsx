@@ -2,7 +2,7 @@
 
 import { useAtomValue } from "jotai";
 import { redirect } from "next/navigation";
-import { authenticatedAtom } from "../../../types/authTypes";
+import { authenticatedAtom } from "@/types/authTypes";
 
 export default function GoHome() {
 	if (!useAtomValue(authenticatedAtom)) {

@@ -1,11 +1,11 @@
-import { Avatar, Divider, List, ListItem, ListItemText } from "@mui/material";
+import { Avatar, List, ListItem, ListItemText } from "@mui/material";
 
 export default function User() {
-	const user: any = {};
-
-	user["username"] = "username";
-	user["name"] = "name";
-	user["email"] = "example@email.com";
+	const user = {
+		username: "username",
+		name: "name",
+		email: "example@email.com",
+	};
 
 	return (
 		<div className="mx-10 py-6 h-full flex flex-row">

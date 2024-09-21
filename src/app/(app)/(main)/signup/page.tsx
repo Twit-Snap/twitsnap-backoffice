@@ -65,8 +65,8 @@ export default function SignUp() {
 	};
 
 	const isValid = () => {
-		let emailIsValid: boolean = isEmailValid(email);
-		let passwordIsValid: boolean = password === passwordAlt;
+		const emailIsValid: boolean = isEmailValid(email);
+		const passwordIsValid: boolean = password === passwordAlt;
 
 		if (!emailIsValid) {
 			setEmailValidation(form_input.error);
@@ -79,10 +79,10 @@ export default function SignUp() {
 		return emailIsValid && passwordIsValid;
 	};
 
-	const handleSubmit = async (e: any) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const data: FormData = new FormData(e.target);
+		const data: FormData = new FormData(e.currentTarget);
 
 		if (!isValid()) {
 			return;
@@ -134,7 +134,9 @@ export default function SignUp() {
 							id={form_input.input}
 							className={usernameValidation}
 							maxLength={INPUT_MAX_LENGTH}
-							onChange={(e: any) => {
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => {
 								clearValidators();
 								setUserName(e.target.value);
 							}}
@@ -163,7 +165,9 @@ export default function SignUp() {
 							className={emailValidation}
 							type="email"
 							maxLength={INPUT_MAX_LENGTH}
-							onChange={(e: any) => {
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => {
 								clearValidators();
 								setEmail(e.target.value);
 							}}
@@ -190,7 +194,9 @@ export default function SignUp() {
 							className={passwordValidation}
 							type="password"
 							maxLength={INPUT_MAX_LENGTH}
-							onChange={(e: any) => {
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => {
 								clearValidators();
 								setPassword(e.target.value);
 							}}
@@ -214,7 +220,9 @@ export default function SignUp() {
 							type="password"
 							className={passwordValidation}
 							maxLength={INPUT_MAX_LENGTH}
-							onChange={(e: any) => {
+							onChange={(
+								e: React.ChangeEvent<HTMLInputElement>
+							) => {
 								clearValidators();
 								setPasswordAlt(e.target.value);
 							}}
