@@ -15,7 +15,7 @@ const isSelectedPage = (path: string, expected: string) => {
 		return "";
 	}
 
-	return "bg-[rgb(110,110,110)] pointer-events-none";
+	return "bg-[rgb(110,110,110)]";
 };
 
 export default function HomeLayout({
