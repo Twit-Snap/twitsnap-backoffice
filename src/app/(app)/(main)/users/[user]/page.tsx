@@ -18,8 +18,8 @@ export default function User() {
 			<div className="w-full bg-[#868686] shadow rounded-r-md border-gray border-l-2">
 				<List className="w-full overflow-auto max-h-full">
 					{Object.entries(user).map(([k, v]) => (
-						<div className="px-2">
-							<ListItem key={`${k}`}>
+						<div className="px-2" key={`${k}`}>
+							<ListItem>
 								<ListItemText
 									primary={
 										<>
