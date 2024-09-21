@@ -18,10 +18,10 @@ export default function SignUp() {
 	const [loginError, setLoginError] = useAtom(loginErrorAtom);
 	const [errorMessage, setErrorMessage] = useAtom(errorMessageAtom);
 
-	const handleSubmit = async (e: any) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const form_data: FormData = new FormData(e.target);
+		const form_data: FormData = new FormData(e.currentTarget);
 
 		await fetch("https://api.restful-api.dev/objects", {
 			method: "post",
@@ -64,7 +64,9 @@ export default function SignUp() {
 								maxLength={INPUT_MAX_LENGTH}
 								required={true}
 								type="text"
-								onChange={(e: any) => {
+								onChange={(
+									e: React.ChangeEvent<HTMLInputElement>
+								) => {
 									if (loginError) {
 										setLoginError("");
 									}
@@ -93,7 +95,9 @@ export default function SignUp() {
 									type="password"
 									maxLength={INPUT_MAX_LENGTH}
 									required={true}
-									onChange={(e: any) => {
+									onChange={(
+										e: React.ChangeEvent<HTMLInputElement>
+									) => {
 										if (loginError) {
 											setLoginError("");
 										}

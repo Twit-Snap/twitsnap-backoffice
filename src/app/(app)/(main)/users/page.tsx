@@ -2,17 +2,15 @@
 
 import {
 	Avatar,
-	Divider,
 	List,
 	ListItem,
 	ListItemAvatar,
 	ListItemText,
 } from "@mui/material";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { atom, useAtom } from "jotai";
 
-var u = [
+const u = [
 	{
 		username: "username",
 		name: "nameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
