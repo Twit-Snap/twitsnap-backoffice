@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "@/styles/globals.css";
 import "@/styles/main_layout/layout.css";
 import "@/styles/constants.css";
+import { Provider } from "jotai";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -37,7 +38,7 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning={true}>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				{children}
+				<Provider>{children}</Provider>
 			</body>
 		</html>
 	);

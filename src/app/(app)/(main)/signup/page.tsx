@@ -1,11 +1,16 @@
 "use client";
 
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
 import form from "@/styles/signup/form.module.css";
 import styles from "@/styles/signup/signup.module.css";
 import form_input from "@/styles/signup/input.module.css";
 import Image from "next/image";
 import logo from "@/assets/icon.ico";
+import { authenticatedAtom } from "@/types/authTypes";
+import axios from "axios";
+import { CircularProgress } from "@mui/material";
+
+const TIMEOUT_MSECONDS = 5000;
 
 const usernameAtom = atom("");
 const emailAtom = atom("");
@@ -16,7 +21,8 @@ const emailValidationAtom = atom("");
 const emailErrorMessageAtom = atom("");
 const passwordValidationAtom = atom("");
 
-const serverErrorAtom = atom("");
+const statusMessageAtom = atom(<></>);
+const progressAtom = atom(false);
 
 const INPUT_MAX_LENGTH: number = 50;
 
@@ -37,7 +43,11 @@ export default function SignUp() {
 		passwordValidationAtom
 	);
 
-	const [serverError, setServerError] = useAtom(serverErrorAtom);
+	const [statusMessage, setStatusMessage] = useAtom(statusMessageAtom);
+
+	const token: string | undefined = useAtomValue(authenticatedAtom)?.token;
+
+	const [progress, setProgress] = useAtom(progressAtom);
 
 	const isEmailValid = (email: string) => {
 		const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -51,12 +61,12 @@ export default function SignUp() {
 
 	const clearValidators = () => {
 		if (
-			serverError ||
+			statusMessage ||
 			usernameValidation ||
 			emailValidation ||
 			passwordValidation
 		) {
-			setServerError("");
+			setStatusMessage(<></>);
 			setUsernameValidation("");
 			setEmailValidation("");
 			setEmailErrorMessage("");
@@ -82,40 +92,65 @@ export default function SignUp() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const data: FormData = new FormData(e.currentTarget);
-
 		if (!isValid()) {
 			return;
 		}
 
-		fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}`, {
-			method: "post",
-			headers: {
-				"Content-type": "application-json",
-			},
-			body: data,
-		})
+		const data: FormData = new FormData(e.currentTarget);
+		data.delete("passwordAlt");
+
+		setProgress(true);
+
+		await axios
+			.post(
+				`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/admins/register`,
+				data,
+				{
+					headers: {
+						"Content-type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					timeout: TIMEOUT_MSECONDS,
+				}
+			)
 			.then((response) => {
-				if (!response.ok) {
-					throw { code: response.status, res: response.json() };
-				}
-
-				return response.json();
+				setProgress(false);
+				setUserName("");
+				setEmail("");
+				setPassword("");
+				setPasswordAlt("");
+				console.log(response.data);
 			})
-			.then((data) => {})
 			.catch((error) => {
-				if ((error.code & 500) === 500) {
-					setServerError(form_input.server_error);
-				}
+				setProgress(false);
 
-				switch (error.res.detail) {
-					case "Email is already in use": {
-						setEmailValidation(form_input.error);
-						setEmailErrorMessage("Email is already in use");
+				if (error.code === "ECONNABORTED") {
+					setStatusMessage(
+						<label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
+							Looks like the server is taking to long to respond,
+							please try again in sometime
+						</label>
+					);
+				} else {
+					if ((error.status & 500) === 500) {
+						setStatusMessage(
+							<label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
+								Server error occurred, please try again later
+							</label>
+						);
 					}
 
-					case "Username is already in use": {
-						setUsernameValidation(form_input.error);
+					switch (error.response.data.detail) {
+						case "Username is already in use": {
+							setUsernameValidation(form_input.error);
+							break;
+						}
+
+						case "Email is already in use": {
+							setEmailValidation(form_input.error);
+							setEmailErrorMessage("Email is already in use");
+							break;
+						}
 					}
 				}
 			});
@@ -128,10 +163,11 @@ export default function SignUp() {
 				onSubmit={handleSubmit}
 				className={`${form.form} text-center`}>
 				<h1 className={form.title}>Sign up a new admin</h1>
-				<div className="space-y-8">
+				<div className="space-y-8 max-w-[30rem]">
 					<div className={`${form_input.textbox} text-gray-400`}>
 						<input
 							id={form_input.input}
+							name="username"
 							className={usernameValidation}
 							maxLength={INPUT_MAX_LENGTH}
 							onChange={(
@@ -140,6 +176,7 @@ export default function SignUp() {
 								clearValidators();
 								setUserName(e.target.value);
 							}}
+							value={username}
 							required={true}></input>
 						<label
 							id={form_input.placeholder}
@@ -164,6 +201,7 @@ export default function SignUp() {
 							id={form_input.input}
 							className={emailValidation}
 							type="email"
+							name="email"
 							maxLength={INPUT_MAX_LENGTH}
 							onChange={(
 								e: React.ChangeEvent<HTMLInputElement>
@@ -171,6 +209,7 @@ export default function SignUp() {
 								clearValidators();
 								setEmail(e.target.value);
 							}}
+							value={email}
 							required={true}></input>
 						<label
 							id={form_input.placeholder}
@@ -193,6 +232,7 @@ export default function SignUp() {
 							id={form_input.input}
 							className={passwordValidation}
 							type="password"
+							name="password"
 							maxLength={INPUT_MAX_LENGTH}
 							onChange={(
 								e: React.ChangeEvent<HTMLInputElement>
@@ -200,6 +240,7 @@ export default function SignUp() {
 								clearValidators();
 								setPassword(e.target.value);
 							}}
+							value={password}
 							required={true}></input>
 						<label
 							id={form_input.placeholder}
@@ -218,6 +259,7 @@ export default function SignUp() {
 						<input
 							id={form_input.input}
 							type="password"
+							name="passwordAlt"
 							className={passwordValidation}
 							maxLength={INPUT_MAX_LENGTH}
 							onChange={(
@@ -226,6 +268,7 @@ export default function SignUp() {
 								clearValidators();
 								setPasswordAlt(e.target.value);
 							}}
+							value={passwordAlt}
 							required={true}></input>
 						<label
 							id={form_input.placeholder}
@@ -238,21 +281,19 @@ export default function SignUp() {
 						</label>
 						<label
 							id={form_input.len}
-							className={`${form_input.len}`}>{`${passwordAlt.length} / ${INPUT_MAX_LENGTH}`}</label>
+							className={`${form_input.len} `}>{`${passwordAlt.length} / ${INPUT_MAX_LENGTH}`}</label>
 						<label
 							id={form_input.error_label}
 							className={passwordValidation}>
 							Both passwords must match
 						</label>
-						<label
-							id={form_input.error_label}
-							className={serverError}>
-							Server error occurred, please try again later
-						</label>
+						<div className="mt-1">{statusMessage}</div>
 					</div>
 				</div>
-				<button type="submit" className={`${form.submit}`}>
-					Submit
+				<button
+					type="submit"
+					className={`${form.submit} flex place-items-center place-content-center`}>
+					{progress ? <CircularProgress color="primary" /> : "Submit"}
 				</button>
 			</form>
 		</div>
