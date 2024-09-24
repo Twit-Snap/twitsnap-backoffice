@@ -29,7 +29,7 @@ export default function User({ params }: { params: { user: string } }) {
 
 		axios
 			.get(
-				`${process.env.NEXT_PUBLIC_SERVER_URL}/admins/usersa/${params.user}`,
+				`${process.env.NEXT_PUBLIC_SERVER_URL}/admins/users/${params.user}`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
