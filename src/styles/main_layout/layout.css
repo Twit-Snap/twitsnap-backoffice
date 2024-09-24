@@ -52,6 +52,44 @@
 	border-radius: 2rem;
 }
 
+.link_logo {
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+@media screen and (max-width: 85rem) {
+	.link {
+		font-size: 0.9rem;
+	}
+}
+
+@media screen and (max-width: 75rem) {
+	.link {
+		font-size: 0.75rem;
+	}
+}
+
+@media screen and (max-width: 68rem) {
+	.link {
+		font-size: 0.6rem;
+	}
+}
+
+@media screen and (max-width: 60rem) {
+	.link {
+		font-size: 0rem;
+	}
+
+	.link_logo {
+		margin-right: 0px;
+	}
+
+	.nav {
+		align-items: center;
+		justify-items: center;
+	}
+}
+
 #main_content {
 	min-width: 82vw;
 	max-width: 82vw;
@@ -59,11 +97,6 @@
 	position: absolute;
 	margin-left: 18vw;
 	z-index: 0;
-}
-
-.link_logo {
-	margin-left: 1rem;
-	margin-right: 1rem;
 }
 
 #twitsnap_logo {
