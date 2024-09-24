@@ -5,8 +5,9 @@ import Link from "next/link";
 import signup_logo from "@/assets/signup_dark.png";
 import users_logo from "@/assets/users_dark.png";
 import { redirect, usePathname } from "next/navigation";
-import { useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
+import { useEffect } from "react";
 
 const isSelectedPage = (path: string, expected: string) => {
 	if (path.split("/")[1] !== expected) {
@@ -23,9 +24,17 @@ export default function HomeLayout({
 }) {
 	const pathname = usePathname();
 
-	// if (!useAtomValue(authenticatedAtom)) {
-	// 	redirect("/login");
-	// }
+	const [auth, setAuth] = useAtom(authenticatedAtom);
+
+	useEffect(() => {
+		if (!auth) {
+			const session: string | null = localStorage.getItem("auth");
+			if (!session) {
+				redirect("/login");
+			}
+			setAuth(JSON.parse(session));
+		}
+	}, [auth, setAuth]);
 
 	return (
 		<div>
