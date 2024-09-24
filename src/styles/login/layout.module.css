@@ -10,7 +10,10 @@
 	width: 50vw;
 	height: 100vh;
 	position: fixed;
+	text-align: center;
 	place-content: center;
+	align-self: center;
+	justify-self: center;
 	left: 50vw;
 	top: var(--title-height);
 }
@@ -18,4 +21,48 @@
 .banner,
 .login {
 	background-color: #25252b;
+}
+
+@media screen and (max-width: 75rem) {
+	.banner {
+		width: 45vw;
+	}
+
+	.login {
+		width: 55vw;
+		left: 45vw;
+	}
+}
+
+@media screen and (max-width: 65rem) {
+	.banner {
+		width: 40vw;
+	}
+
+	.login {
+		width: 60vw;
+		left: 40vw;
+	}
+}
+
+@media screen and (max-width: 55rem) {
+	.banner {
+		width: 35vw;
+	}
+
+	.login {
+		width: 65vw;
+		left: 35vw;
+	}
+}
+
+@media screen and (max-width: 45rem) {
+	.banner {
+		visibility: hidden;
+	}
+
+	.login {
+		width: 100vw;
+		left: 0px;
+	}
 }
