@@ -2,39 +2,71 @@
 
 import {
 	Avatar,
+	CircularProgress,
 	List,
 	ListItem,
 	ListItemAvatar,
 	ListItemText,
 } from "@mui/material";
 import Link from "next/link";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useAtomValue } from "jotai";
+import { authenticatedAtom } from "@/types/authTypes";
+import axios from "axios";
+import { useEffect } from "react";
+import { UserType } from "@/types/user";
 
-const u = [
-	{
-		username: "username",
-		name: "nameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-	},
-];
-
-for (let index = 0; index < 20; index++) {
-	u.push({
-		username: "username",
-		name: "name",
-		description:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-	});
-}
-
-const usersAtom = atom(u);
+const usersAtom = atom<UserType[] | null>(null);
+const TIMEOUT_MSECONDS = 5000;
+const statusMessageAtom = atom(<CircularProgress size="20rem" />);
 
 export default function Users() {
 	const [users, setUsers] = useAtom(usersAtom);
+	const token = useAtomValue(authenticatedAtom)?.token;
+	const [statusMessage, setStatusMessage] = useAtom(statusMessageAtom);
+
+	useEffect(() => {
+		if (!token) {
+			return;
+		}
+
+		axios
+			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admins/users`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+				timeout: TIMEOUT_MSECONDS,
+			})
+			.then((response) => setUsers(response.data.data))
+			.catch((error) => {
+				if (error.code === "ECONNABORTED") {
+					setStatusMessage(
+						<label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
+							Looks like the server is taking to long to respond,
+							please try again in sometime
+						</label>
+					);
+				} else {
+					if ((error.status & 500) === 500) {
+						setStatusMessage(
+							<label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
+								Server error occurred, please try again later
+							</label>
+						);
+					}
+				}
+			});
+	}, [token, setStatusMessage, setUsers]);
+
+	if (!users) {
+		return (
+			<div className="w-full h-full flex justify-center place-items-center">
+				{statusMessage}
+			</div>
+		);
+	}
 
 	return (
-		<div className="bg-[rgb(55,54,54)] flex place-content-center">
+		<div className="flex place-content-center min-h-full min-w-full">
 			<div className="w-1/2 border-[rgb(81,81,81)] border-l border-r">
 				<List>
 					{users.map((user) => (
@@ -60,7 +92,24 @@ export default function Users() {
 													@{user.username}
 												</label>
 												<label className="cursor-pointer text-[rgb(181,181,181)] whitespace-wrap text-pretty">
-													{user.description}
+													{/* {user.description} */}
+													Lorem ipsum dolor sit amet,
+													consectetur adipiscing elit.
+													Vivamus ultricies fringilla
+													tortor, in elementum nunc
+													fermentum ornare. Etiam
+													hendrerit libero elementum
+													pulvinar tempus. Mauris at
+													risus risus. Phasellus in
+													nunc urna. Quisque et
+													pellentesque elit, in
+													ullamcorper lorem. Sed
+													ornare in metus at
+													consequat. Phasellus at nisi
+													sed sem mattis egestas sed
+													quis risus. Mauris hendrerit
+													mattis metus, sed sodales
+													libero blandit at.
 												</label>
 											</span>
 										}></ListItemText>
