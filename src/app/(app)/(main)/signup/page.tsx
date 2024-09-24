@@ -1,6 +1,6 @@
 "use client";
 
-import { atom, useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import form from "@/styles/signup/form.module.css";
 import styles from "@/styles/signup/signup.module.css";
 import form_input from "@/styles/signup/input.module.css";
@@ -9,45 +9,28 @@ import logo from "@/assets/icon.ico";
 import { authenticatedAtom } from "@/types/authTypes";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
+import { useState } from "react";
 
 const TIMEOUT_MSECONDS = 5000;
-
-const usernameAtom = atom("");
-const emailAtom = atom("");
-const passwordAtom = atom("");
-const passwordAltAtom = atom("");
-const usernameValidationAtom = atom("");
-const emailValidationAtom = atom("");
-const emailErrorMessageAtom = atom("");
-const passwordValidationAtom = atom("");
-
-const statusMessageAtom = atom(<></>);
-const progressAtom = atom(false);
 
 const INPUT_MAX_LENGTH: number = 50;
 
 export default function SignUp() {
-	const [username, setUserName] = useAtom(usernameAtom);
-	const [email, setEmail] = useAtom(emailAtom);
-	const [password, setPassword] = useAtom(passwordAtom);
-	const [passwordAlt, setPasswordAlt] = useAtom(passwordAltAtom);
+	const [username, setUserName] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [passwordAlt, setPasswordAlt] = useState("");
 
-	const [usernameValidation, setUsernameValidation] = useAtom(
-		usernameValidationAtom
-	);
-	const [emailValidation, setEmailValidation] = useAtom(emailValidationAtom);
-	const [emailErrorMessage, setEmailErrorMessage] = useAtom(
-		emailErrorMessageAtom
-	);
-	const [passwordValidation, setPasswordValidation] = useAtom(
-		passwordValidationAtom
-	);
+	const [usernameValidation, setUsernameValidation] = useState("");
+	const [emailValidation, setEmailValidation] = useState("");
+	const [emailErrorMessage, setEmailErrorMessage] = useState("");
+	const [passwordValidation, setPasswordValidation] = useState("");
 
-	const [statusMessage, setStatusMessage] = useAtom(statusMessageAtom);
+	const [statusMessage, setStatusMessage] = useState(<></>);
 
 	const token: string | undefined = useAtomValue(authenticatedAtom)?.token;
 
-	const [progress, setProgress] = useAtom(progressAtom);
+	const [progress, setProgress] = useState(false);
 
 	const isEmailValid = (email: string) => {
 		const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -138,18 +121,18 @@ export default function SignUp() {
 								Server error occurred, please try again later
 							</label>
 						);
-					}
+					} else {
+						switch (error.response.data.detail) {
+							case "Username is already in use": {
+								setUsernameValidation(form_input.error);
+								break;
+							}
 
-					switch (error.response.data.detail) {
-						case "Username is already in use": {
-							setUsernameValidation(form_input.error);
-							break;
-						}
-
-						case "Email is already in use": {
-							setEmailValidation(form_input.error);
-							setEmailErrorMessage("Email is already in use");
-							break;
+							case "Email is already in use": {
+								setEmailValidation(form_input.error);
+								setEmailErrorMessage("Email is already in use");
+								break;
+							}
 						}
 					}
 				}
@@ -292,6 +275,7 @@ export default function SignUp() {
 				</div>
 				<button
 					type="submit"
+					onClick={clearValidators}
 					className={`${form.submit} flex place-items-center place-content-center`}>
 					{progress ? <CircularProgress color="primary" /> : "Submit"}
 				</button>

@@ -9,19 +9,18 @@ import {
 	ListItemText,
 } from "@mui/material";
 import axios from "axios";
-import { atom, useAtom, useAtomValue } from "jotai";
-import { useEffect } from "react";
+import { useAtomValue } from "jotai";
+import { useEffect, useState } from "react";
 import { UserType } from "@/types/user";
 
-const userAtom = atom<UserType | null>(null);
-
 const TIMEOUT_MSECONDS = 5000;
-const statusMessageAtom = atom(<CircularProgress size="20rem" />);
 
 export default function User({ params }: { params: { user: string } }) {
-	const [user, setUser] = useAtom(userAtom);
+	const [user, setUser] = useState<UserType | null>(null);
 	const token = useAtomValue(authenticatedAtom)?.token;
-	const [statusMessage, setStatusMessage] = useAtom(statusMessageAtom);
+	const [statusMessage, setStatusMessage] = useState(
+		<CircularProgress size="20rem" />
+	);
 
 	useEffect(() => {
 		if (!token || !params.user) {
@@ -30,7 +29,7 @@ export default function User({ params }: { params: { user: string } }) {
 
 		axios
 			.get(
-				`${process.env.NEXT_PUBLIC_SERVER_URL}/admins/users/${params.user}`,
+				`${process.env.NEXT_PUBLIC_SERVER_URL}/admins/usersa/${params.user}`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
@@ -56,13 +55,13 @@ export default function User({ params }: { params: { user: string } }) {
 								Server error occurred, please try again later
 							</label>
 						);
+					} else {
+						setStatusMessage(
+							<label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
+								Oops!. This user does not exist!
+							</label>
+						);
 					}
-
-					setStatusMessage(
-						<label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
-							Oops!. This user does not exist!
-						</label>
-					);
 				}
 			});
 	}, [token, params.user, setStatusMessage, setUser]);

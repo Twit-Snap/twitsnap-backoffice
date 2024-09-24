@@ -9,20 +9,20 @@ import {
 	ListItemText,
 } from "@mui/material";
 import Link from "next/link";
-import { atom, useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { UserType } from "@/types/user";
 
-const usersAtom = atom<UserType[] | null>(null);
 const TIMEOUT_MSECONDS = 5000;
-const statusMessageAtom = atom(<CircularProgress size="20rem" />);
 
 export default function Users() {
-	const [users, setUsers] = useAtom(usersAtom);
+	const [users, setUsers] = useState<UserType[] | null>(null);
 	const token = useAtomValue(authenticatedAtom)?.token;
-	const [statusMessage, setStatusMessage] = useAtom(statusMessageAtom);
+	const [statusMessage, setStatusMessage] = useState(
+		<CircularProgress size="20rem" />
+	);
 
 	useEffect(() => {
 		if (!token) {
@@ -50,6 +50,12 @@ export default function Users() {
 						setStatusMessage(
 							<label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
 								Server error occurred, please try again later
+							</label>
+						);
+					} else {
+						setStatusMessage(
+							<label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
+								Oops!, this content does not exist!
 							</label>
 						);
 					}

@@ -1,6 +1,6 @@
 "use client";
 
-import { atom, useAtom, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import form from "@/styles/login/form.module.css";
 import styles from "@/styles/login/login.module.css";
 import form_input from "@/styles/login/input.module.css";
@@ -8,22 +8,17 @@ import { authenticatedAtom } from "@/types/authTypes";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
-
-const identificationAtom = atom("");
-const passwordAtom = atom("");
-const loginErrorAtom = atom("");
-const errorMessageAtom = atom(<></>);
-const progressAtom = atom(false);
+import { useState } from "react";
 
 const INPUT_MAX_LENGTH: number = 50;
 const TIMEOUT_MSECONDS = 5000;
 
 export default function SignUp() {
-	const [identification, setIdentification] = useAtom(identificationAtom);
-	const [password, setPassword] = useAtom(passwordAtom);
-	const [loginError, setLoginError] = useAtom(loginErrorAtom);
-	const [errorMessage, setErrorMessage] = useAtom(errorMessageAtom);
-	const [progress, setProgress] = useAtom(progressAtom);
+	const [identification, setIdentification] = useState("");
+	const [password, setPassword] = useState("");
+	const [loginError, setLoginError] = useState("");
+	const [errorMessage, setErrorMessage] = useState(<></>);
+	const [progress, setProgress] = useState(false);
 
 	const setAuth = useSetAtom(authenticatedAtom);
 	const router = useRouter();
