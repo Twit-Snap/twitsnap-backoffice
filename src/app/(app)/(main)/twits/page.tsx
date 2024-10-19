@@ -4,7 +4,7 @@ import { CircularProgress } from "@mui/material";
 import { useAtomValue } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import { TwitType } from "@/types/twit";
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
@@ -103,26 +103,33 @@ export default function Twits() {
         <CircularProgress size="20rem" />
     );
 
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - twits.length) : 0;
+    const emptyRows = useMemo(() => {
+        return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - twits?.length) : 0;
+    }, [page, rowsPerPage, twits?.length]);
 
-    const handleChangePage = (
-        event: React.MouseEvent<HTMLButtonElement> | null,
-        newPage: number,
-    ) => {
-        setPage(newPage);
-        fetchTwits(newPage, rowsPerPage);
-        fetchTotalAmountOfTwits();
-    };
 
-    const handleChangeRowsPerPage = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-        fetchTwits(0, rowsPerPage);
-        fetchTotalAmountOfTwits();
-    };
+    const  handleChangePage= useCallback(
+         (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+            setPage(newPage);
+            fetchTwits(newPage, rowsPerPage);
+            fetchTotalAmountOfTwits();
+
+    }, [page, rowsPerPage]);
+
+
+    const handleChangeRowsPerPage = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            const newRowsPerPage = parseInt(event.target.value, 10);
+            console.log(newRowsPerPage);
+            setRowsPerPage(newRowsPerPage);
+            setPage(0);
+
+
+            fetchTwits(0, newRowsPerPage);
+            fetchTotalAmountOfTwits();
+        },
+        [page, rowsPerPage]
+    );
 
     const fetchTotalAmountOfTwits = async () => {
         if (!token) return;
@@ -167,7 +174,7 @@ export default function Twits() {
         if (!token) return;
 
         const queryParams = {
-            limit: rowsPerPage,
+            limit: limit,
             offset: (limit * page),
         };
 
@@ -273,6 +280,11 @@ export default function Twits() {
                             </TableCell>
                         </TableRow>
                     ))}
+                    {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                            <TableCell colSpan={6} />
+                        </TableRow>
+                    )}
 
                 </TableBody>
                 <TableFooter>
