@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
-import TablePagination from '@mui/material/TablePagination';
+    import TablePagination from '@mui/material/TablePagination';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -44,6 +44,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 
     const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         onPageChange(event, page + 1);
+        console.log('click forward');
     };
 
     const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -85,26 +86,28 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 }
 
 interface TableComponentProps {
-    data: TwitType[]; // Asegúrate de que el tipo TwitType está definido correctamente
+    data: TwitType[];
     page: number;
     rowsPerPage: number;
     setPage: (page: number) => void;
     setRowsPerPage: (rowsPerPage: number) => void;
+    totalRows: number | null;
 }
 
-export function TableComponent({ data }) {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+export function TableComponent({ data, page, rowsPerPage, setPage, setRowsPerPage, totalRows }: TableComponentProps) {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
+
+
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number,
     ) => {
-        console.log('New page:', newPage);
+        console.log('Handling clicking on page change');
         setPage(newPage);
+        console.log('twits', data);
+        console.log('must go to fetch');
     };
 
     const handleChangeRowsPerPage = (
@@ -176,7 +179,7 @@ export function TableComponent({ data }) {
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 20, { label: 'All', value: -1 }]}
                                 colSpan={3}
-                                count={data.length}
+                                count={totalRows || 0}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 slotProps={{
@@ -190,7 +193,7 @@ export function TableComponent({ data }) {
                                 onPageChange={handleChangePage}
                                 onRowsPerPageChange={handleChangeRowsPerPage}
                                 ActionsComponent={TablePaginationActions}
-                            />
+                             />
                         </TableRow>
                     </TableFooter>
                 </Table>
