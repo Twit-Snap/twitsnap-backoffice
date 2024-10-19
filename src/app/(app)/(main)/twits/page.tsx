@@ -98,10 +98,11 @@ export default function Twits() {
     const [totalTwits, setTotalTwits] = useState(0);
     const token = useAtomValue(authenticatedAtom)?.token;
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [statusMessage, setStatusMessage] = useState(
         <CircularProgress size="20rem" />
     );
+    const[loading, setLoading] = useState(false);
 
     const emptyRows = useMemo(() => {
         return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - twits?.length) : 0;
@@ -111,22 +112,24 @@ export default function Twits() {
     const  handleChangePage= useCallback(
          (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
             setPage(newPage);
+            setLoading(true);
             fetchTwits(newPage, rowsPerPage);
             fetchTotalAmountOfTwits();
-
+            setLoading(false);
     }, [page, rowsPerPage]);
 
 
     const handleChangeRowsPerPage = useCallback(
         (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+            setLoading(true);
             const newRowsPerPage = parseInt(event.target.value, 10);
             console.log(newRowsPerPage);
             setRowsPerPage(newRowsPerPage);
             setPage(0);
 
-
             fetchTwits(0, newRowsPerPage);
             fetchTotalAmountOfTwits();
+            setLoading(false);
         },
         [page, rowsPerPage]
     );
@@ -218,12 +221,14 @@ export default function Twits() {
     }
 
     useEffect(() => {
+        setLoading(true);
         fetchTwits(page, rowsPerPage);
         fetchTotalAmountOfTwits();
+        setLoading(false);
     }, []);
 
 
-    if (!twits) {
+    if (!twits || loading) {
         return (
             <div className="w-full h-full flex justify-center place-items-center">
                 {statusMessage}
@@ -290,7 +295,7 @@ export default function Twits() {
                 <TableFooter>
                     <TableRow>
                         <TablePagination
-                            rowsPerPageOptions={[5, 10, 20, { label: 'All', value: -1 }]}
+                            rowsPerPageOptions={[5, 10, 20]}
                             colSpan={3}
                             count={totalTwits || 0}
                             rowsPerPage={rowsPerPage}
