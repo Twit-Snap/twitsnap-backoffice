@@ -16,6 +16,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import { TwitType } from "@/types/twit";
 
 interface TablePaginationActionsProps {
     count: number;
@@ -83,11 +84,18 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
     );
 }
 
+interface TableComponentProps {
+    data: TwitType[]; // Asegúrate de que el tipo TwitType está definido correctamente
+    page: number;
+    rowsPerPage: number;
+    setPage: (page: number) => void;
+    setRowsPerPage: (rowsPerPage: number) => void;
+}
+
 export function TableComponent({ data }) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
@@ -95,6 +103,7 @@ export function TableComponent({ data }) {
         event: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number,
     ) => {
+        console.log('New page:', newPage);
         setPage(newPage);
     };
 
@@ -165,7 +174,7 @@ export function TableComponent({ data }) {
                     <TableFooter>
                         <TableRow>
                             <TablePagination
-                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                rowsPerPageOptions={[5, 10, 20, { label: 'All', value: -1 }]}
                                 colSpan={3}
                                 count={data.length}
                                 rowsPerPage={rowsPerPage}

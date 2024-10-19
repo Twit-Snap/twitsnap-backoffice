@@ -1,14 +1,6 @@
 "use client";
 
-import {
-    Avatar,
-    CircularProgress,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
-} from "@mui/material";
-import Link from "next/link";
+import { CircularProgress } from "@mui/material";
 import { useAtomValue } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
 import axios from "axios";
@@ -21,22 +13,18 @@ const TIMEOUT_MSECONDS = 5000;
 export default function Users() {
     const [twits, setTwits] = useState<TwitType[] | null>(null);
     const token = useAtomValue(authenticatedAtom)?.token;
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [statusMessage, setStatusMessage] = useState(
         <CircularProgress size="20rem" />
     );
 
-
-
-    useEffect(() => {
-        if (!token) {
-            return;
-        }
-        console.log(process.env.NEXT_PUBLIC_TWTIS_URL);
-        console.log(token);
+    const fetchTwits = async (page: number, limit: number) => {
+        if (!token) return;
 
         const queryParams = {
-            limit: 20,
-            byFollowed: false
+            limit: limit,
+            offset: limit * page
         };
         axios
             .get(`${process.env.NEXT_PUBLIC_TWIT_SERVER_URL}/snaps`, {
@@ -72,6 +60,11 @@ export default function Users() {
                     }
                 }
             });
+    }
+
+    useEffect(() => {
+        fetchTwits(page, rowsPerPage);
+
     }, [token, setStatusMessage, setTwits]);
 
     if (!twits) {
