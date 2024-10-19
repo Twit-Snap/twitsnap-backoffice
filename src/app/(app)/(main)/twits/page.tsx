@@ -53,7 +53,6 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 
     const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         onPageChange(event, page + 1);
-        console.log('click forward');
     };
 
     const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -111,9 +110,9 @@ export default function Twits() {
         event: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number,
     ) => {
-        console.log('Handling clicking on page change');
         setPage(newPage);
-        console.log('must go to fetch');
+        fetchTwits(newPage, rowsPerPage);
+        fetchTotalAmountOfTwits();
     };
 
     const handleChangeRowsPerPage = (
@@ -121,6 +120,8 @@ export default function Twits() {
     ) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+        fetchTwits(0, rowsPerPage);
+        fetchTotalAmountOfTwits();
     };
 
     const fetchTotalAmountOfTwits = async () => {
@@ -181,7 +182,6 @@ export default function Twits() {
             })
             .then((response) => {
                 setTwits(response.data.data);
-                console.log('Twits:', response.data.data);
             })
             .catch((error) => {
                 if (error.code === "ECONNABORTED") {
@@ -211,15 +211,10 @@ export default function Twits() {
     }
 
     useEffect(() => {
-        console.log('Fetching twits');
-        console.log('Page:', page);
-        console.log('Rows per page:', rowsPerPage);
-        console.log('offset:', (rowsPerPage * page));
-        console.log('limit:', rowsPerPage);
-        fetchTotalAmountOfTwits();
         fetchTwits(page, rowsPerPage);
+        fetchTotalAmountOfTwits();
+    }, []);
 
-    }, [token, setStatusMessage, setTwits, setTotalTwits, page, rowsPerPage]);
 
     if (!twits) {
         return (
@@ -251,10 +246,7 @@ export default function Twits() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {(rowsPerPage > 0
-                            ? twits.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            : twits
-                    ).map((twit)  => (
+                    {(twits).map((twit)  => (
                         <TableRow
                             key={twit.id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
