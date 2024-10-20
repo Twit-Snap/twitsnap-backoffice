@@ -110,7 +110,7 @@ export default function Twits() {
         return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - twits?.length) : 0;
     }, [page, rowsPerPage, twits?.length]);
 
-    const queryParams = {
+    let queryParams = {
         limit: rowsPerPage,
         offset: (rowsPerPage * page),
     };
@@ -121,7 +121,7 @@ export default function Twits() {
             setPage(newPage);
 
             setLoading(true);
-            fetchTwits(queryParams);
+            fetchTwits({limit: rowsPerPage, offset: (rowsPerPage * newPage)});
             fetchTotalAmountOfTwits();
             setLoading(false);
 
