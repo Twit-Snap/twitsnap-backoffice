@@ -257,11 +257,11 @@ export default function Twits() {
                 <Table sx={{ minWidth: '80%' }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Id</TableCell>
-                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Username</TableCell>
-                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Name</TableCell>
-                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Date</TableCell>
-                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Content</TableCell>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Id</TableCell>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Username</TableCell>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Name</TableCell>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Date</TableCell>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Content</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -278,20 +278,21 @@ export default function Twits() {
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
                                     maxWidth: '50px',
-                                    color: '#b6b4b4'
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
                                 }}>
                                     {twit.id}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4' }}>
+                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
                                     {twit.user.username}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4' }}>
+                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
                                     {twit.user.name}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4' }}>
+                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
                                     {twit.createdAt}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4' }}>
+                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
                                     {twit.content}
                                 </TableCell>
                             </TableRow>
@@ -304,7 +305,7 @@ export default function Twits() {
 
                     </TableBody>
                     <TableFooter>
-                        <TableRow>
+                        <TableRow sx={{ borderBottom: '1px solid #444444', width: '100%' }}>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 20]}
                                 colSpan={3}
@@ -341,6 +342,7 @@ export default function Twits() {
                                     },
                                 }}
                                 sx={{
+                                    borderColor: '#444444', // Color del borde superior de la barra
                                     '& .MuiTablePagination-selectRoot': {
                                         color: '#b6b4b4',
                                     },
