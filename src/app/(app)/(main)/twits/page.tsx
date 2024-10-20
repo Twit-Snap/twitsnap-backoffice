@@ -5,7 +5,6 @@ import { useAtomValue } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
 import axios from "axios";
 import {useCallback, useEffect, useMemo, useState} from "react";
-import { TwitType } from "@/types/twit";
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -24,6 +23,9 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+
+import { TwitType } from "@/types/twit";
+import  SearchModel  from "./searchModel"
 
 const TIMEOUT_MSECONDS = 5000;
 
@@ -103,6 +105,8 @@ export default function Twits() {
         <CircularProgress size="20rem" />
     );
     const[loading, setLoading] = useState(false);
+    const[filter, setFilter] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const emptyRows = useMemo(() => {
         return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - twits?.length) : 0;
@@ -238,84 +242,144 @@ export default function Twits() {
 
 
     return (
-        <TableContainer
-            component={Paper}
-            sx={{
-                height: '100%',
-                width: '100%',
-                overflowX: 'auto',
-            }}
-        >
+        <>
+            <SearchModel/>
+            <TableContainer
+                component={Paper}
+                sx={{
+                    height: '100%',
+                    width: '100%',
+                    overflowX: 'auto',
+                    backgroundColor: '#25252b'
+                }}
+            >
 
-            <Table sx={{ minWidth: '80%' }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="left">Id</TableCell>
-                        <TableCell align="left">Username</TableCell>
-                        <TableCell align="left">Name</TableCell>
-                        <TableCell align="left">Date</TableCell>
-                        <TableCell align="left">Content</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {(twits).map((twit)  => (
-                        <TableRow
-                            key={twit.id}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell component="th" scope="row" sx={{
-                                whiteSpace: 'nowrap',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                maxWidth: '50px'
-                            }}>
-                                {twit.id}
-                            </TableCell>
-                            <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                {twit.user.username}
-                            </TableCell>
-                            <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                {twit.user.name}
-                            </TableCell>
-                            <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                {twit.createdAt}
-                            </TableCell>
-                            <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                {twit.content}
-                            </TableCell>
+                <Table sx={{ minWidth: '80%' }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Id</TableCell>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Username</TableCell>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Name</TableCell>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Date</TableCell>
+                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4' }}>Content</TableCell>
                         </TableRow>
-                    ))}
-                    {emptyRows > 0 && (
-                        <TableRow style={{ height: 53 * emptyRows }}>
-                            <TableCell colSpan={6} />
-                        </TableRow>
-                    )}
+                    </TableHead>
+                    <TableBody>
+                        {(twits).map((twit)  => (
+                            <TableRow
+                                key={twit.id}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 },
+                                    '&:hover': { backgroundColor: '#777676' },
 
-                </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 20]}
-                            colSpan={3}
-                            count={totalTwits || 0}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            slotProps={{
-                                select: {
-                                    inputProps: {
-                                        'aria-label': 'rows per page',
+                                }}
+                            >
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    maxWidth: '50px',
+                                    color: '#b6b4b4'
+                                }}>
+                                    {twit.id}
+                                </TableCell>
+                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4' }}>
+                                    {twit.user.username}
+                                </TableCell>
+                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4' }}>
+                                    {twit.user.name}
+                                </TableCell>
+                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4' }}>
+                                    {twit.createdAt}
+                                </TableCell>
+                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4' }}>
+                                    {twit.content}
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                        {emptyRows > 0 && (
+                            <TableRow style={{ height: 53 * emptyRows }}>
+                                <TableCell colSpan={6} />
+                            </TableRow>
+                        )}
+
+                    </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 20]}
+                                colSpan={3}
+                                count={totalTwits || 0}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                slotProps={{
+                                    select: {
+                                        inputProps: {
+                                            'aria-label': 'rows per page',
+                                        },
+                                        native: true,
                                     },
-                                    native: true,
-                                },
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
-                    </TableRow>
-                </TableFooter>
-            </Table>
-        </TableContainer>
+                                }}
+                                SelectProps={{
+                                    sx: {
+                                        '& .MuiSelect-select': {
+                                            backgroundColor: '#444444', // Fondo del select
+                                            color: '#ffffff', // Color del texto
+                                        },
+                                        '& .MuiSelect-icon': {
+                                            color: '#b6b4b4', // Color del icono
+                                        },
+                                        '&:hover .MuiSelect-select': {
+                                            backgroundColor: '#555555', // Fondo cuando pasa el mouse
+                                        },
+                                        '&:focus .MuiSelect-select': {
+                                            backgroundColor: '#666666', // Fondo cuando está en foco
+                                        },
+                                        '& .MuiSelect-selectMenu': {
+                                            backgroundColor: '#444444', // Fondo del menú del select
+                                            color: '#ffffff', // Color del texto del menú
+                                        },
+                                    },
+                                }}
+                                sx={{
+                                    '& .MuiTablePagination-selectRoot': {
+                                        color: '#b6b4b4',
+                                    },
+                                    '& .MuiTablePagination-select': {
+                                        color: '#b6b4b4',
+                                    },
+                                    '& .MuiTablePagination-toolbar': {
+                                        color: '#b6b4b4',
+                                    },
+                                    '& .MuiTablePagination-displayedRows': {
+                                        color: '#b6b4b4',
+                                    },
+                                    '& .MuiButtonBase-root': {
+                                        color: '#b6b4b4',
+                                        '&:hover': {
+                                            backgroundColor: '#555555',
+                                        },
+                                    },
+                                    '& .MuiInputBase-root': {
+                                        backgroundColor: '#444444',
+                                    },
+                                    '& .MuiSelect-select': {
+                                        backgroundColor: '#444444', // Cambia el fondo del select cuando está abierto
+                                        color: '#ffffff', // Cambia el color del texto del select
+                                    },
+
+
+                                }}
+
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                ActionsComponent={TablePaginationActions}
+
+                            />
+                        </TableRow>
+                    </TableFooter>
+                </Table>
+            </TableContainer>
+        </>
     );
 }
 
