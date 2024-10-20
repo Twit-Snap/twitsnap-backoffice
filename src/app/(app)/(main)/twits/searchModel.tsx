@@ -1,13 +1,24 @@
 import { Box, Button, TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import React, { useState } from "react";
 
-export default function YourComponent() {
+export default function SearchModel({ fetchData, rowsPerPage, setPage }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedFilter, setSelectedFilter] = useState("");
 
     const handleApplyFilter = () => {
         console.log("Selected filter:", selectedFilter);
-        // Aquí puedes manejar la lógica para aplicar el filtro
+        console.log("Selected term:", searchTerm);
+        const params = {
+            createdAt: selectedFilter === "date" ? searchTerm : undefined,
+            limit: rowsPerPage,
+            offset: 0,
+            username: selectedFilter === "username" ? searchTerm : undefined,
+        };
+
+        fetchData(params);
+        setPage(0);
+
+
     };
 
     const styles = {
@@ -72,7 +83,12 @@ export default function YourComponent() {
                     '& .MuiInputLabel-root': {
                         color: '#b6b4b4',
                     },
+                    '& .MuiInputBase-input': {
+                        color: '#b6b4b4', // Text color when writing
+                    },
                 }}
+
+
             />
             <FormControl variant="outlined" style={styles.formControl}>
                 <InputLabel id="filter-label" style={{ color: '#b6b4b4' }}>Filter</InputLabel>
@@ -86,9 +102,9 @@ export default function YourComponent() {
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
-                    <MenuItem value="filter1">Name</MenuItem>
-                    <MenuItem value="filter2">Content</MenuItem>
-                    <MenuItem value="filter3">Date</MenuItem>
+                    <MenuItem value="username">Username</MenuItem>
+                    <MenuItem value="content">Content</MenuItem>
+                    <MenuItem value="date">Date</MenuItem>
                 </Select>
             </FormControl>
             <Button

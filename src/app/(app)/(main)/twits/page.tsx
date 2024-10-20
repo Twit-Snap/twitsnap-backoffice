@@ -105,21 +105,26 @@ export default function Twits() {
         <CircularProgress size="20rem" />
     );
     const[loading, setLoading] = useState(false);
-    const[filter, setFilter] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
 
     const emptyRows = useMemo(() => {
         return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - twits?.length) : 0;
     }, [page, rowsPerPage, twits?.length]);
 
+    const queryParams = {
+        limit: rowsPerPage,
+        offset: (rowsPerPage * page),
+    };
+
 
     const  handleChangePage= useCallback(
          (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
             setPage(newPage);
+
             setLoading(true);
-            fetchTwits(newPage, rowsPerPage);
+            fetchTwits(queryParams);
             fetchTotalAmountOfTwits();
             setLoading(false);
+
     }, [page, rowsPerPage]);
 
 
@@ -127,11 +132,9 @@ export default function Twits() {
         (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             setLoading(true);
             const newRowsPerPage = parseInt(event.target.value, 10);
-            console.log(newRowsPerPage);
             setRowsPerPage(newRowsPerPage);
             setPage(0);
-
-            fetchTwits(0, newRowsPerPage);
+            fetchTwits({limit: newRowsPerPage, offset: 0});
             fetchTotalAmountOfTwits();
             setLoading(false);
         },
@@ -177,13 +180,8 @@ export default function Twits() {
             });
     }
 
-    const fetchTwits = async (page: number, limit: number) => {
+    const fetchTwits = async (queryParams) => {
         if (!token) return;
-
-        const queryParams = {
-            limit: limit,
-            offset: (limit * page),
-        };
 
         axios
             .get(`${process.env.NEXT_PUBLIC_TWIT_SERVER_URL}/snaps`, {
@@ -225,8 +223,10 @@ export default function Twits() {
     }
 
     useEffect(() => {
+
+
         setLoading(true);
-        fetchTwits(page, rowsPerPage);
+        fetchTwits(queryParams);
         fetchTotalAmountOfTwits();
         setLoading(false);
     }, []);
@@ -243,7 +243,7 @@ export default function Twits() {
 
     return (
         <>
-            <SearchModel/>
+            <SearchModel fetchData={fetchTwits} rowsPerPage={rowsPerPage} setPage={setPage} />
             <TableContainer
                 component={Paper}
                 sx={{
