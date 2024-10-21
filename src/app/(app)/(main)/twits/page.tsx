@@ -111,10 +111,6 @@ export default function Twits() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [showError, setShowError] = useState(false);
 
-    const emptyRows = useMemo(() => {
-        return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - twits?.length) : 0;
-    }, [page, rowsPerPage, twits?.length]);
-
     let queryParams = {
         limit: rowsPerPage,
         offset: (rowsPerPage * page),
@@ -305,12 +301,6 @@ export default function Twits() {
                                 </TableCell>
                             </TableRow>
                         ))}
-                        {emptyRows > 0 && (
-                            <TableRow style={{ height: 53 * emptyRows }}>
-                                <TableCell colSpan={6} />
-                            </TableRow>
-                        )}
-
                     </TableBody>
                     <TableFooter>
                         <TableRow sx={{ borderBottom: '1px solid #444444', width: '100%' }}>
