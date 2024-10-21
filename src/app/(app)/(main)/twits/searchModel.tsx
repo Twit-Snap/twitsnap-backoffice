@@ -13,6 +13,7 @@ export default function SearchModel({ fetchData, rowsPerPage, setPage }) {
             limit: rowsPerPage,
             offset: 0,
             username: selectedFilter === "username" ? searchTerm : undefined,
+            has: selectedFilter === "content" ? searchTerm : undefined,
         };
 
         fetchData(params);
@@ -24,10 +25,10 @@ export default function SearchModel({ fetchData, rowsPerPage, setPage }) {
     const styles = {
         box: {
             display: "flex",
-            justifyContent: "flex-start",
+            justifyContent: "space-around",
             alignItems: "center",
             marginTop: '24px',
-            gap: '24px',
+            //gap: '24px',
             marginBottom: '24px',
             paddingRight: '50px',
             paddingLeft: '50px',
