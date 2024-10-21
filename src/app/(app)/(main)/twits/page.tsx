@@ -24,6 +24,9 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 import { TwitType } from "@/types/twit";
 import  SearchModel  from "./searchModel"
 
@@ -105,6 +108,8 @@ export default function Twits() {
         <CircularProgress size="20rem" />
     );
     const[loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [showError, setShowError] = useState(false);
 
     const emptyRows = useMemo(() => {
         return page > 0 ? Math.max(0, (1 + page) * rowsPerPage - twits?.length) : 0;
@@ -194,6 +199,8 @@ export default function Twits() {
             })
             .then((response) => {
                 setTwits(response.data.data);
+                setErrorMessage(null);
+                setShowError(false);
             })
             .catch((error) => {
                 if (error.code === "ECONNABORTED") {
@@ -210,6 +217,9 @@ export default function Twits() {
                                 Server error occurred, please try again later
                             </label>
                         );
+                    } else if ((error.status & 400) === 400) {
+                        setErrorMessage("Invalid filter parameters");
+                        setShowError(true);
                     } else {
                         setStatusMessage(
                             <label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
@@ -219,11 +229,9 @@ export default function Twits() {
                     }
                 }
             });
-
     }
 
     useEffect(() => {
-
 
         setLoading(true);
         fetchTwits(queryParams);
@@ -381,6 +389,26 @@ export default function Twits() {
                     </TableFooter>
                 </Table>
             </TableContainer>
+            <Snackbar
+                open={showError}
+                autoHideDuration={6000}
+                onClose={() => setShowError(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                style={{ right: '50px' }}
+            >
+                <Alert onClose={() => setShowError(false)} severity="error"
+                       sx={{ width: '100%',
+                           backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                           color: 'inherit',
+                           '& .MuiAlert-icon': {
+                               color: 'inherit',
+                               opacity: 0.7,
+                           }
+                        }}
+                >
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
         </>
     );
 }
