@@ -86,7 +86,7 @@ export default function SignUp() {
 
 		await axios
 			.post(
-				`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/admins/register`,
+				`${process.env.NEXT_PUBLIC_USER_SERVER_URL}/auth/admins/register`,
 				data,
 				{
 					headers: {

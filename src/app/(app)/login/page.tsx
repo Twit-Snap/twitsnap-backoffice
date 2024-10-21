@@ -32,7 +32,7 @@ export default function SignUp() {
 
 		await axios
 			.post(
-				`${process.env.NEXT_PUBLIC_SERVER_URL}/auth/admins/login`,
+				`${process.env.NEXT_PUBLIC_USER_SERVER_URL}/auth/admins/login`,
 				form_data,
 				{
 					headers: { "Content-type": "application/json" },

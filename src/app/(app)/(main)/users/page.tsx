@@ -30,7 +30,7 @@ export default function Users() {
 		}
 
 		axios
-			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/admins/users`, {
+			.get(`${process.env.NEXT_PUBLIC_USER_SERVER_URL}/admins/users`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
