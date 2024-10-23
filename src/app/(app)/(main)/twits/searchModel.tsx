@@ -36,7 +36,7 @@ export default function SearchModel({ fetchData, rowsPerPage, setPage, searchTer
             justifyContent: "space-around",
             alignItems: "center",
             marginTop: '24px',
-            //gap: '24px',
+            gap: '24px',
             marginBottom: '24px',
             paddingRight: '50px',
             paddingLeft: '50px',
@@ -83,6 +83,7 @@ export default function SearchModel({ fetchData, rowsPerPage, setPage, searchTer
                 variant="outlined"
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
+                autoComplete="off"
                 style={styles.textField}
                 sx={{
                     '& .MuiInputBase-input::placeholder': {
