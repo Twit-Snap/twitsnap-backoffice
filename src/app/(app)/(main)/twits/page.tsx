@@ -26,6 +26,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useRouter } from 'next/navigation';
 
 import { TwitType } from "@/types/twit";
 import  SearchModel  from "./searchModel"
@@ -114,6 +115,13 @@ export default function Twits() {
     let queryParams = {
         limit: rowsPerPage,
         offset: (rowsPerPage * page),
+    };
+
+    const router = useRouter(); // Inicias el router
+
+    // Función para manejar la navegación cuando se hace clic en una fila
+    const handleRowClick = (twitId: string) => {
+        router.push(`/twits/${twitId}`);
     };
 
 
@@ -269,13 +277,14 @@ export default function Twits() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {(twits).map((twit)  => (
+                        {(twits).map((twit) => (
                             <TableRow
                                 key={twit.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 },
+                                sx={{
+                                    '&:last-child td, &:last-child th': { border: 0 },
                                     '&:hover': { backgroundColor: '#777676' },
-
                                 }}
+                                onClick={() => handleRowClick(twit.id)} // Evento onClick que navega al twit
                             >
                                 <TableCell component="th" scope="row" sx={{
                                     whiteSpace: 'nowrap',
@@ -285,22 +294,42 @@ export default function Twits() {
                                     color: '#b6b4b4',
                                     borderColor: '#444444'
                                 }}>
-                                    {twit.id}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
-                                    {twit.user.username}
+                                <TableCell align="left" sx={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
-                                    {twit.user.name}
+                                <TableCell align="left" sx={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
-                                    {twit.createdAt}
+                                <TableCell align="left" sx={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
-                                    {twit.content}
+                                <TableCell align="left" sx={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
                                 </TableCell>
                             </TableRow>
                         ))}
+
                     </TableBody>
                     <TableFooter>
                         <TableRow sx={{ borderBottom: '1px solid #444444', width: '100%' }}>
