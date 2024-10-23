@@ -337,7 +337,7 @@ export default function Twits() {
                                 <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
                                     {twit.createdAt}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
+                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 200, color: '#b6b4b4', borderColor: '#444444' }}>
                                     {twit.content}
                                 </TableCell>
                             </TableRow>
