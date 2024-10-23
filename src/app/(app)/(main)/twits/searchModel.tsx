@@ -1,8 +1,17 @@
 import { Box, Button, TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import React, {useCallback} from "react";
 
+interface SearchModelProps {
+    fetchData: (queryParams: object | undefined) => void;
+    rowsPerPage: number;
+    setPage: (page: number) => void;
+    searchTerm: string;
+    setSearchTerm: (term: string) => void;
+    selectedFilter: string;
+    setSelectedFilter: (filter: string) => void;
+}
 
-export default function SearchModel({ fetchData, rowsPerPage, setPage, searchTerm, setSearchTerm, selectedFilter, setSelectedFilter }) {
+export default function SearchModel({ fetchData, rowsPerPage, setPage, searchTerm, setSearchTerm, selectedFilter, setSelectedFilter }: SearchModelProps) {
 
 
     const handleApplyFilter = useCallback(() => {
