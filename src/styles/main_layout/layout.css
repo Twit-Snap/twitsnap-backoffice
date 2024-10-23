@@ -116,6 +116,12 @@
 	height: 2rem;
 }
 
+#twit_logo{
+	width: 2rem;
+	height: 2rem;
+	filter: brightness(0) invert(1);
+}
+
 .nav,
 .title {
 	color: white;

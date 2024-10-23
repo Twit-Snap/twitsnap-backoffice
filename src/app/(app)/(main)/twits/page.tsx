@@ -4,7 +4,7 @@ import { CircularProgress } from "@mui/material";
 import { useAtomValue } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
 import axios from "axios";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -103,7 +103,7 @@ export default function Twits() {
     const [totalTwits, setTotalTwits] = useState(0);
     const token = useAtomValue(authenticatedAtom)?.token;
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
     const [statusMessage, setStatusMessage] = useState(
         <CircularProgress size="20rem" />
     );
@@ -111,9 +111,20 @@ export default function Twits() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [showError, setShowError] = useState(false);
 
-    let queryParams = {
-        limit: rowsPerPage,
-        offset: (rowsPerPage * page),
+    const [searchTerm, setSearchTerm_] = useState("");
+    const [selectedFilter, setSelectedFilter_] = useState("");
+
+    const selectedSearchRef = useRef("");
+    const selectedFilterRef = useRef("");
+
+    const setSearchTerm = (newState: string) => {
+        selectedSearchRef.current = newState;
+        setSearchTerm_(newState);
+    };
+
+    const setSelectedFilter = (newState: string) => {
+        selectedFilterRef.current = newState;
+        setSelectedFilter_(newState);
     };
 
 
@@ -122,8 +133,17 @@ export default function Twits() {
             setPage(newPage);
 
             setLoading(true);
-            fetchTwits({limit: rowsPerPage, offset: (rowsPerPage * newPage)});
-            fetchTotalAmountOfTwits();
+            const params = {
+                createdAt: selectedFilterRef.current === "date" ? selectedSearchRef.current : undefined,
+                limit: rowsPerPage,
+                offset: (rowsPerPage * newPage),
+                username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
+                has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
+            }
+
+            fetchData(params);
+
+
             setLoading(false);
 
     }, [page, rowsPerPage]);
@@ -135,14 +155,22 @@ export default function Twits() {
             const newRowsPerPage = parseInt(event.target.value, 10);
             setRowsPerPage(newRowsPerPage);
             setPage(0);
-            fetchTwits({limit: newRowsPerPage, offset: 0});
-            fetchTotalAmountOfTwits();
+
+            const params = {
+                createdAt: selectedFilterRef.current === "date" ? selectedSearchRef.current : undefined,
+                limit: newRowsPerPage,
+                offset: 0,
+                username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
+                has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
+            }
+            fetchData(params);
+
             setLoading(false);
         },
         [page, rowsPerPage]
     );
 
-    const fetchTotalAmountOfTwits = async () => {
+    const fetchTotalAmountOfTwits = async (queryParams: object | undefined) => {
         if (!token) return;
 
         axios
@@ -150,9 +178,11 @@ export default function Twits() {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                params: queryParams as object | undefined,
                 timeout: TIMEOUT_MSECONDS,
             })
             .then((response) => {
+                console.log('set total amount', response.data.data);
                 setTotalTwits(response.data.data);
             })
             .catch((error) => {
@@ -181,7 +211,7 @@ export default function Twits() {
             });
     }
 
-    const fetchTwits = async (queryParams) => {
+    const fetchTwits = async (queryParams: object | undefined) => {
         if (!token) return;
 
         axios
@@ -227,12 +257,22 @@ export default function Twits() {
             });
     }
 
-    useEffect(() => {
-
+    const fetchData = async (queryParams: object | undefined) => {
         setLoading(true);
         fetchTwits(queryParams);
-        fetchTotalAmountOfTwits();
+        fetchTotalAmountOfTwits(queryParams);
         setLoading(false);
+    }
+
+    useEffect(() => {
+        const params = {
+            createdAt: selectedFilterRef.current === "date" ? selectedSearchRef.current : undefined,
+            limit: rowsPerPage,
+            offset: (rowsPerPage * page),
+            username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
+            has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
+        }
+        fetchData(params);
     }, []);
 
 
@@ -247,7 +287,8 @@ export default function Twits() {
 
     return (
         <>
-            <SearchModel fetchData={fetchTwits} rowsPerPage={rowsPerPage} setPage={setPage} />
+            <SearchModel fetchData={fetchData} rowsPerPage={rowsPerPage} setPage={setPage} searchTerm={searchTerm}
+                         setSearchTerm={setSearchTerm} selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
             <TableContainer
                 component={Paper}
                 sx={{
