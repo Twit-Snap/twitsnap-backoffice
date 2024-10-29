@@ -5,27 +5,25 @@ import axios from "axios";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 import {TwitType} from "@/types/twit";
-import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { CircularProgress, Table, TableBody, TableCell, TableContainer, TableRow, Paper } from "@mui/material";
 
 const TIMEOUT_MSECONDS = 5000;
 
-export default function Twit({ params }: { params: { twit_id: string } }) {
+export default function Twit({ params }: { params: { twit: string } }) {
     const [twit, setTwit] = useState<TwitType | null>(null);
     const token = useAtomValue(authenticatedAtom)?.token;
     const [statusMessage, setStatusMessage] = useState(
-        <CircularProgress size="20rem" />
+        <CircularProgress size="10rem" />
     );
-    console.log(params);
-
 
     useEffect(() => {
-        if (!token || !params.twit_id) {
+        if (!token || !params.twit) {
             return;
         }
-        console.log('segunda vez',params.twit_id);
+
         axios
             .get(
-                `${process.env.NEXT_PUBLIC_TWIT_SERVER_URL}/snaps/${params.twit_id}`,
+                `${process.env.NEXT_PUBLIC_TWIT_SERVER_URL}/snaps/${params.twit}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -35,7 +33,7 @@ export default function Twit({ params }: { params: { twit_id: string } }) {
             )
             .then((response) => {
                 setTwit(response.data.data);
-                console.log(response.data.data);
+
             })
             .catch((error) => {
                 if (error.code === "ECONNABORTED") {
@@ -66,34 +64,123 @@ export default function Twit({ params }: { params: { twit_id: string } }) {
     if (!twit) {
         return (
             <div className="w-full h-full flex justify-center place-items-center">
-                {statusMessage}
+                    {statusMessage}
             </div>
         );
     }
-
+    //{loading && <CircularProgress size="10rem" />}
+    //{error && <div className="error-message">{error}</div>}
     return (
         <div>
-            {statusMessage}
+
             {twit && (
-                <TableContainer component={Paper}>
+                <TableContainer
+                    component={Paper}
+                    sx={{
+                        height: '100%',
+                        width: '100%',
+                        overflowX: 'auto',
+                        backgroundColor: '#25252b'
+                    }}>
                     <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>ID</TableCell>
-                                <TableCell>Username</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Created At</TableCell>
-                                <TableCell>Content</TableCell>
-                                <TableCell>Avatar</TableCell>
-                            </TableRow>
-                        </TableHead>
                         <TableBody>
-                            <TableRow key={twit.id}>
-                                <TableCell>{twit.id}</TableCell>
-                                <TableCell>{twit.user.username}</TableCell>
-                                <TableCell>{twit.user.name}</TableCell>
-                                <TableCell>{twit.createdAt}</TableCell>
-                                <TableCell>{twit.content}</TableCell>
+                            <TableRow>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    <strong>ID:</strong>
+                                </TableCell>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    {twit.id}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    <strong>Username:</strong>
+                                </TableCell>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    {twit.user.username}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                <strong>Name:</strong>
+                                </TableCell>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    {twit.user.name}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    <strong>Created At:</strong>
+                                </TableCell>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    {new Date(twit.createdAt).toLocaleString()}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    <strong>Content:</strong>
+                                </TableCell>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>{twit.content}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    <strong>Avatar:</strong>
+                                </TableCell>
+                                <TableCell component="th" scope="row" sx={{
+                                    whiteSpace: 'nowrap',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    <img
+                                        //src={twit.user.avatar} // Asegúrate de que este campo exista
+                                        alt={`${twit.user.username}'s avatar`}
+                                        style={{ width: '50px', height: '50px', borderRadius: '50%' }} // Estilo para mostrar como círculo
+                                    />
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

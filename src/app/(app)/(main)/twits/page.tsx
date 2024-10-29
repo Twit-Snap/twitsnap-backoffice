@@ -106,7 +106,7 @@ export default function Twits() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [statusMessage, setStatusMessage] = useState(
-        <CircularProgress size="20rem" />
+        <CircularProgress size="10rem" />
     );
     const[loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -147,7 +147,7 @@ export default function Twits() {
                 offset: (rowsPerPage * newPage),
                 username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
                 has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
-                exactDate: selectedFilter.current === "date" ? true : undefined,
+                exactDate: selectedFilterRef.current === "date" ? true : undefined,
             }
 
             fetchData(params);
@@ -171,7 +171,7 @@ export default function Twits() {
                 offset: 0,
                 username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
                 has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
-                exactDate: selectedFilter.current === "date" ? true : undefined,
+                exactDate: selectedFilterRef.current === "date" ? true : undefined,
             }
             fetchData(params);
 
@@ -281,7 +281,7 @@ export default function Twits() {
             offset: (rowsPerPage * page),
             username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
             has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
-            exactDate: selectedFilter.current === "date" ? true : undefined,
+            exactDate: selectedFilterRef.current === "date" ? true : undefined,
         }
         fetchData(params);
     }, []);
@@ -338,6 +338,7 @@ export default function Twits() {
                                     color: '#b6b4b4',
                                     borderColor: '#444444'
                                 }}>
+                                    {twit.id}
                                 </TableCell>
                                 <TableCell align="left" sx={{
                                     whiteSpace: 'nowrap',
@@ -346,6 +347,7 @@ export default function Twits() {
                                     color: '#b6b4b4',
                                     borderColor: '#444444'
                                 }}>
+                                    {twit.user.username}
                                 </TableCell>
                                 <TableCell align="left" sx={{
                                     whiteSpace: 'nowrap',
@@ -354,6 +356,7 @@ export default function Twits() {
                                     color: '#b6b4b4',
                                     borderColor: '#444444'
                                 }}>
+                                    {twit.user.name}
                                 </TableCell>
                                 <TableCell align="left" sx={{
                                     whiteSpace: 'nowrap',
@@ -362,16 +365,16 @@ export default function Twits() {
                                     color: '#b6b4b4',
                                     borderColor: '#444444'
                                 }}>
+                                    {twit.createdAt}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 200,  color: '#b6b4b4', borderColor: '#444444' }}>
+                                <TableCell align="left" sx={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    maxWidth: 200,
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444' }}>
                                     {twit.content}
-                                <TableCell align="left" sx={{
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    color: '#b6b4b4',
-                                    borderColor: '#444444'
-                                }}>
                                 </TableCell>
                             </TableRow>
                         ))}

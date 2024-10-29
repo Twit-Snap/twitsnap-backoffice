@@ -51,7 +51,7 @@ export default function HomeLayout({
 					/>
 					<span>Sign up an admin</span>
 				</Link>
-				<Link
+				<Link	
 					href={"/users"}
 					className={`link ${isSelectedPage(pathname, "users")}`}>
 					<Image
