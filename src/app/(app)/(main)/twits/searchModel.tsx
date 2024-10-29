@@ -1,26 +1,35 @@
 import { Box, Button, TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
-import React, { useState } from "react";
+import React, {useCallback} from "react";
 
-export default function SearchModel({ fetchData, rowsPerPage, setPage }) {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [selectedFilter, setSelectedFilter] = useState("");
+interface SearchModelProps {
+    fetchData: (queryParams: object | undefined) => void;
+    rowsPerPage: number;
+    setPage: (page: number) => void;
+    searchTerm: string;
+    setSearchTerm: (term: string) => void;
+    selectedFilter: string;
+    setSelectedFilter: (filter: string) => void;
+}
 
-    const handleApplyFilter = () => {
+export default function SearchModel({ fetchData, rowsPerPage, setPage, searchTerm, setSearchTerm, selectedFilter, setSelectedFilter }: SearchModelProps) {
+
+
+    const handleApplyFilter = useCallback(() => {
         console.log("Selected filter:", selectedFilter);
         console.log("Selected term:", searchTerm);
+
         const params = {
             createdAt: selectedFilter === "date" ? searchTerm : undefined,
             limit: rowsPerPage,
             offset: 0,
             username: selectedFilter === "username" ? searchTerm : undefined,
             has: selectedFilter === "content" ? searchTerm : undefined,
+            exactDate: selectedFilter === "date" ? true : undefined,
         };
 
         fetchData(params);
         setPage(0);
-
-
-    };
+    }, [fetchData, rowsPerPage, searchTerm, selectedFilter, setPage]);
 
     const styles = {
         box: {
@@ -28,7 +37,7 @@ export default function SearchModel({ fetchData, rowsPerPage, setPage }) {
             justifyContent: "space-around",
             alignItems: "center",
             marginTop: '24px',
-            //gap: '24px',
+            gap: '24px',
             marginBottom: '24px',
             paddingRight: '50px',
             paddingLeft: '50px',
@@ -36,9 +45,9 @@ export default function SearchModel({ fetchData, rowsPerPage, setPage }) {
         },
         textField: {
             marginRight: '10px',
-            backgroundColor: '#191919', // Same appearance as the Select
+            backgroundColor: '#191919',
             color: '#ffffff',
-            borderRadius: '8px', // Rounded borders for all
+            borderRadius: '8px',
             width: '700px'
         },
         formControl: {
@@ -51,13 +60,13 @@ export default function SearchModel({ fetchData, rowsPerPage, setPage }) {
             paddingLeft: '30px',
 
             '& .MuiSelect-icon': {
-                color: '#b6b4b4', // Color del icono
+                color: '#b6b4b4',
             },
             '&:hover': {
-                backgroundColor: '#555555', // Fondo cuando pasa el mouse
+                backgroundColor: '#555555',
             },
             '&:focus': {
-                backgroundColor: '#666666', // Fondo cuando está en foco
+                backgroundColor: '#666666',
             },
 
         },
@@ -75,17 +84,18 @@ export default function SearchModel({ fetchData, rowsPerPage, setPage }) {
                 variant="outlined"
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
+                autoComplete="off"
                 style={styles.textField}
                 sx={{
                     '& .MuiInputBase-input::placeholder': {
-                        color: '#b6b4b4', // Placeholder color
-                        fontWeight: 'bold', // Make placeholder bold
+                        color: '#b6b4b4',
+                        fontWeight: 'bold',
                     },
                     '& .MuiInputLabel-root': {
                         color: '#b6b4b4',
                     },
                     '& .MuiInputBase-input': {
-                        color: '#b6b4b4', // Text color when writing
+                        color: '#b6b4b4',
                     },
                 }}
 

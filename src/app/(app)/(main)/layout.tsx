@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import signup_logo from "@/assets/signup_dark.png";
 import users_logo from "@/assets/users_dark.png";
-import twit_logo from "@/assets/list-box-outline.png";
+import twit_logo from "@/assets/twit_logo.png";
 import { redirect, usePathname } from "next/navigation";
 import { useAtom } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
