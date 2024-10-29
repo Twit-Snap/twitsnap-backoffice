@@ -24,6 +24,7 @@ export default function SearchModel({ fetchData, rowsPerPage, setPage, searchTer
             offset: 0,
             username: selectedFilter === "username" ? searchTerm : undefined,
             has: selectedFilter === "content" ? searchTerm : undefined,
+            exactDate: selectedFilter === "date" ? true : undefined,
         };
 
         fetchData(params);

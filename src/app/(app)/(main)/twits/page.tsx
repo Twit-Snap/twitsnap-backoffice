@@ -139,6 +139,7 @@ export default function Twits() {
                 offset: (rowsPerPage * newPage),
                 username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
                 has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
+                exactDate: selectedFilter.current === "date" ? true : undefined,
             }
 
             fetchData(params);
@@ -162,6 +163,7 @@ export default function Twits() {
                 offset: 0,
                 username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
                 has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
+                exactDate: selectedFilter.current === "date" ? true : undefined,
             }
             fetchData(params);
 
@@ -271,6 +273,7 @@ export default function Twits() {
             offset: (rowsPerPage * page),
             username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
             has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
+            exactDate: selectedFilter.current === "date" ? true : undefined,
         }
         fetchData(params);
     }, []);
