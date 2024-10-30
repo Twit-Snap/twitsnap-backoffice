@@ -86,16 +86,6 @@ export default function Twit({ params }: { params: { twit: string } }) {
             </div>
         );
     }
-    //{loading && <CircularProgress size="10rem" />}
-    //{error && <div className="error-message">{error}</div>}
-
-/*            {}
-            <h2 className="text-2xl font-semibold text-white ">
-                {twit.user.name}
-            </h2>
-
-            {}
-<p className="text-gray-400">@{twit.user.username}</p>*/
 
     return (
         <div className="mx-10 py-6 h-full flex flex-col items-start">
