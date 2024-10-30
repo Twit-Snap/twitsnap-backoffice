@@ -115,7 +115,7 @@ export default function Twit({ params }: { params: { twit: string } }) {
                                 }
                                 secondary={
                                     <label className="pl-3 cursor-text text-customTextColor">
-                                        {k === 'createdAt' ? formatDate(v) : `${v}`}
+                                        {k === 'createdAt' ? formatDate(v as string) : `${v}`}
                                     </label>
                                 }></ListItemText>
                         </ListItem>
@@ -158,7 +158,7 @@ export default function Twit({ params }: { params: { twit: string } }) {
                                     }
                                     secondary={
                                         <label className="pl-3 cursor-text text-customTextColor">
-                                            {Array.isArray(v) ? v.map(item => item.text).join(', ') : ''} {/* Cambia 'text' según la estructura de tu objeto */}
+                                            {Array.isArray(v) ? v.map(item => item.text).join(', ') : ''} {}
                                         </label>
                                     }
                                 />
