@@ -89,9 +89,6 @@ export default function Twit({ params }: { params: { twit: string } }) {
 
     return (
         <div className="mx-10 py-6 h-full flex flex-col items-start">
-
-
-            {/* Contenedor de la imagen con estilo de subtítulo */}
             <div className="bg-[#868686] shadow rounded-full p-2 flex items-start  mb-10">
                 <Avatar
                     className="w-24 h-24 rounded-full"
