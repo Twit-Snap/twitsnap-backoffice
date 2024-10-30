@@ -19,7 +19,7 @@ export default function User({ params }: { params: { user: string } }) {
 	const [user, setUser] = useState<UserType | null>(null);
 	const token = useAtomValue(authenticatedAtom)?.token;
 	const [statusMessage, setStatusMessage] = useState(
-		<CircularProgress size="20rem" />
+		<CircularProgress size="10rem" />
 	);
 
 	useEffect(() => {

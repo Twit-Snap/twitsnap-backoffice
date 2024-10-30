@@ -19,11 +19,13 @@ export default function Twit({ params }: { params: { twit: string } }) {
     const [statusMessage, setStatusMessage] = useState(
         <CircularProgress size="10rem" />
     );
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    const fetchData = async () =>{
         if (!token || !params.twit) {
             return;
         }
+
 
         axios
             .get(
@@ -64,15 +66,20 @@ export default function Twit({ params }: { params: { twit: string } }) {
                     }
                 }
             });
+    }
+    useEffect(() => {
+        setLoading(true);
+        fetchData();
+        setLoading(false);
     }, []);
 
 
-    const formatDate = (dateString: string) => {
+    const formatDate = (dateString: string ) => {
         return new Date(dateString).toLocaleString()
     };
 
 
-    if (!twit) {
+    if (!twit || loading) {
         return (
             <div className="w-full h-full flex justify-center place-items-center">
                     {statusMessage}

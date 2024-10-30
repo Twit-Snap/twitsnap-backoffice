@@ -309,8 +309,7 @@ export default function Twits() {
                     backgroundColor: '#25252b'
                 }}
             >
-
-                <Table sx={{ minWidth: '80%' }} aria-label="simple table">
+                <Table stickyHeader sx={{ minWidth: '80%' }} aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Id</TableCell>
