@@ -110,7 +110,7 @@ export default function Twit({ params }: { params: { twit: string } }) {
             </div>
             <List style={{backgroundColor: '#25252b', color: '#b6b4b4'}} className="w-full overflow-auto max-h-full">
                 {Object.entries(twit).filter(([key]) =>
-                    key !== 'userLiked' && key !== 'user'
+                    key !== 'userLiked' && key !== 'user' && key!== 'entities'
                 ).map(([k, v]) => (
                     <div className="px-2" key={`${k}`}>
                         <ListItem>
@@ -152,6 +152,29 @@ export default function Twit({ params }: { params: { twit: string } }) {
                         </ListItem>
                     </div>
                 ))}
+                {Object.entries(twit.entities || {})
+                    .filter(([key]) => ['hashtags'].includes(key))
+                    .map(([k, v]) => (
+                        <div className="px-2" key={`user-${k}`}>
+                            <ListItem>
+                                <ListItemText
+                                    primary={
+                                        <>
+                                            <label className="font-bold capitalize cursor-text text-customTextColor">
+                                                {k}
+                                            </label>
+                                            <hr className="border-t border-customBorder my-4" />
+                                        </>
+                                    }
+                                    secondary={
+                                        <label className="pl-3 cursor-text text-customTextColor">
+                                            {Array.isArray(v) ? v.map(item => item.text).join(', ') : ''} {/* Cambia 'text' según la estructura de tu objeto */}
+                                        </label>
+                                    }
+                                />
+                            </ListItem>
+                        </div>
+                    ))}
             </List>
         </div>
     );
