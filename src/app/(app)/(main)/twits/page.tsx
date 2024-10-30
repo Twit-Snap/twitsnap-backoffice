@@ -328,7 +328,8 @@ export default function Twits() {
                                     '&:last-child td, &:last-child th': { border: 0 },
                                     '&:hover': { backgroundColor: '#777676' },
                                 }}
-                                onClick={() => handleRowClick(twit.id)} // Evento onClick que navega al twit
+                                onClick={() => handleRowClick(twit.id)}
+                                className="hover:cursor-pointer"
                             >
                                 <TableCell component="th" scope="row" sx={{
                                     whiteSpace: 'nowrap',
