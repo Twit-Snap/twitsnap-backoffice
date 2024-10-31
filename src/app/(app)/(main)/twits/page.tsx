@@ -26,6 +26,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useRouter } from 'next/navigation';
 
 import { TwitType } from "@/types/twit";
 import  SearchModel  from "./searchModel"
@@ -105,7 +106,7 @@ export default function Twits() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [statusMessage, setStatusMessage] = useState(
-        <CircularProgress size="20rem" />
+        <CircularProgress size="10rem" />
     );
     const[loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -127,6 +128,13 @@ export default function Twits() {
         setSelectedFilter_(newState);
     };
 
+    const router = useRouter(); // Inicias el router
+
+    // Función para manejar la navegación cuando se hace clic en una fila
+    const handleRowClick = (twitId: string) => {
+        router.push(`/twits/${twitId}`);
+    };
+
 
     const  handleChangePage= useCallback(
          (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -139,7 +147,7 @@ export default function Twits() {
                 offset: (rowsPerPage * newPage),
                 username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
                 has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
-                exactDate: selectedFilter.current === "date" ? true : undefined,
+                exactDate: selectedFilterRef.current === "date" ? true : undefined,
             }
 
             fetchData(params);
@@ -163,7 +171,7 @@ export default function Twits() {
                 offset: 0,
                 username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
                 has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
-                exactDate: selectedFilter.current === "date" ? true : undefined,
+                exactDate: selectedFilterRef.current === "date" ? true : undefined,
             }
             fetchData(params);
 
@@ -273,10 +281,14 @@ export default function Twits() {
             offset: (rowsPerPage * page),
             username: selectedFilterRef.current === "username" ? selectedSearchRef.current : undefined,
             has: selectedFilterRef.current === "content" ? selectedSearchRef.current : undefined,
-            exactDate: selectedFilter.current === "date" ? true : undefined,
+            exactDate: selectedFilterRef.current === "date" ? true : undefined,
         }
         fetchData(params);
     }, []);
+
+    const formatDate = (dateString: string ) => {
+        return new Date(dateString).toLocaleString()
+    };
 
 
     if (!twits || loading) {
@@ -301,25 +313,25 @@ export default function Twits() {
                     backgroundColor: '#25252b'
                 }}
             >
-
-                <Table sx={{ minWidth: '80%' }} aria-label="simple table">
+                <Table stickyHeader sx={{ minWidth: '80%' }} aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Id</TableCell>
                             <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Username</TableCell>
-                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Name</TableCell>
                             <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Date</TableCell>
                             <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Content</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {(twits).map((twit)  => (
+                        {(twits).map((twit) => (
                             <TableRow
                                 key={twit.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 },
+                                sx={{
+                                    '&:last-child td, &:last-child th': { border: 0 },
                                     '&:hover': { backgroundColor: '#777676' },
-
                                 }}
+                                onClick={() => handleRowClick(twit.id)}
+                                className="hover:cursor-pointer"
                             >
                                 <TableCell component="th" scope="row" sx={{
                                     whiteSpace: 'nowrap',
@@ -331,20 +343,36 @@ export default function Twits() {
                                 }}>
                                     {twit.id}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
+                                <TableCell align="left" sx={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
                                     {twit.user.username}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
-                                    {twit.user.name}
+                                <TableCell align="left" sx={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444'
+                                }}>
+                                    {formatDate(twit.createdAt)}
                                 </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#b6b4b4', borderColor: '#444444' }}>
-                                    {twit.createdAt}
-                                </TableCell>
-                                <TableCell align="left" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 200,  color: '#b6b4b4', borderColor: '#444444' }}>
+                                <TableCell align="left" sx={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    maxWidth: 200,
+                                    color: '#b6b4b4',
+                                    borderColor: '#444444' }}>
                                     {twit.content}
                                 </TableCell>
                             </TableRow>
                         ))}
+
                     </TableBody>
                     <TableFooter>
                         <TableRow sx={{ borderBottom: '1px solid #444444', width: '100%' }}>

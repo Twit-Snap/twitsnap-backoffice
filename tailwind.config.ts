@@ -11,6 +11,9 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        customBorder: "#444444",
+        customTextColor: "#b6b4b4", // Agrega el color personalizado aquí
+
       },
     },
   },

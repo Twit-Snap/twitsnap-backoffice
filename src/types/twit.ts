@@ -13,7 +13,7 @@ type Hashtag = {
     text: string;
 }
 
-type Entities = {
+export type Entities = {
     hashtags: Hashtag[];
 }
 
