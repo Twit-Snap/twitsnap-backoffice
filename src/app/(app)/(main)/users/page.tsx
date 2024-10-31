@@ -1,6 +1,7 @@
 "use client";
 
 import { CircularProgress } from "@mui/material";
+import Checkbox, { checkboxClasses } from "@mui/material/Checkbox";
 import { useAtomValue } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
 import axios from "axios";
@@ -29,6 +30,7 @@ import Alert from "@mui/material/Alert";
 
 import { UserType } from "@/types/user";
 import { useRouter } from "next/navigation";
+import BlockedButton from "@/components/blockedButton";
 
 const TIMEOUT_MSECONDS = 5000;
 
@@ -121,7 +123,7 @@ export default function Twits() {
 	const [totalTwits, setTotalUsers] = useState(0);
 	const token = useAtomValue(authenticatedAtom)?.token;
 	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [rowsPerPage, setRowsPerPage] = useState(5);
 	const [statusMessage, setStatusMessage] = useState(
 		<CircularProgress size="20rem" />
 	);
@@ -324,6 +326,7 @@ export default function Twits() {
 									backgroundColor: "#191919",
 									color: "#b6b4b4",
 									borderColor: "#444444",
+									textAlign: "center",
 								}}>
 								Username
 							</TableCell>
@@ -333,6 +336,7 @@ export default function Twits() {
 									backgroundColor: "#191919",
 									color: "#b6b4b4",
 									borderColor: "#444444",
+									textAlign: "center",
 								}}>
 								Name
 							</TableCell>
@@ -342,6 +346,7 @@ export default function Twits() {
 									backgroundColor: "#191919",
 									color: "#b6b4b4",
 									borderColor: "#444444",
+									textAlign: "center",
 								}}>
 								E-mail
 							</TableCell>
@@ -351,6 +356,7 @@ export default function Twits() {
 									backgroundColor: "#191919",
 									color: "#b6b4b4",
 									borderColor: "#444444",
+									textAlign: "center",
 								}}>
 								Creation date
 							</TableCell>
@@ -360,6 +366,7 @@ export default function Twits() {
 									backgroundColor: "#191919",
 									color: "#b6b4b4",
 									borderColor: "#444444",
+									textAlign: "center",
 								}}>
 								Private
 							</TableCell>
@@ -369,6 +376,7 @@ export default function Twits() {
 									backgroundColor: "#191919",
 									color: "#b6b4b4",
 									borderColor: "#444444",
+									textAlign: "center",
 								}}>
 								Blocked
 							</TableCell>
@@ -398,6 +406,7 @@ export default function Twits() {
 										maxWidth: "50px",
 										color: "#b6b4b4",
 										borderColor: "#444444",
+										textAlign: "center",
 									}}>
 									{user.username}
 								</TableCell>
@@ -409,6 +418,7 @@ export default function Twits() {
 										textOverflow: "ellipsis",
 										color: "#b6b4b4",
 										borderColor: "#444444",
+										textAlign: "center",
 									}}>
 									{user.name}
 								</TableCell>
@@ -420,6 +430,7 @@ export default function Twits() {
 										textOverflow: "ellipsis",
 										color: "#b6b4b4",
 										borderColor: "#444444",
+										textAlign: "center",
 									}}>
 									{user.email}
 								</TableCell>
@@ -432,6 +443,7 @@ export default function Twits() {
 										maxWidth: 200,
 										color: "#b6b4b4",
 										borderColor: "#444444",
+										textAlign: "center",
 									}}>
 									{user.createdAt}
 								</TableCell>
@@ -443,8 +455,18 @@ export default function Twits() {
 										textOverflow: "ellipsis",
 										color: "#b6b4b4",
 										borderColor: "#444444",
+										textAlign: "center",
 									}}>
-									{`${user.isPrivate}`}
+									<Checkbox
+										disabled
+										defaultChecked={user.isPrivate}
+										disableRipple={true}
+										sx={{
+											"&.Mui-disabled": {
+											  color: "rgb(150 150 150)"
+											}
+										  }}
+									/>
 								</TableCell>
 								<TableCell
 									align="left"
@@ -455,8 +477,12 @@ export default function Twits() {
 										maxWidth: 200,
 										color: "#b6b4b4",
 										borderColor: "#444444",
+										textAlign: "center",
 									}}>
-									{`${user.isBlocked}`}
+									<BlockedButton
+										username={user.username}
+										initIsBlocked={user.isBlocked}
+									/>
 								</TableCell>
 							</TableRow>
 						))}
