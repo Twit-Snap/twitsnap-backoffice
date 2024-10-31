@@ -286,6 +286,10 @@ export default function Twits() {
         fetchData(params);
     }, []);
 
+    const formatDate = (dateString: string ) => {
+        return new Date(dateString).toLocaleString()
+    };
+
 
     if (!twits || loading) {
         return (
@@ -314,7 +318,6 @@ export default function Twits() {
                         <TableRow>
                             <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Id</TableCell>
                             <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Username</TableCell>
-                            <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Name</TableCell>
                             <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Date</TableCell>
                             <TableCell align="left" sx={{ backgroundColor: '#191919', color: '#b6b4b4', borderColor: '#444444' }}>Content</TableCell>
                         </TableRow>
@@ -356,16 +359,7 @@ export default function Twits() {
                                     color: '#b6b4b4',
                                     borderColor: '#444444'
                                 }}>
-                                    {twit.user.name}
-                                </TableCell>
-                                <TableCell align="left" sx={{
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    color: '#b6b4b4',
-                                    borderColor: '#444444'
-                                }}>
-                                    {twit.createdAt}
+                                    {formatDate(twit.createdAt)}
                                 </TableCell>
                                 <TableCell align="left" sx={{
                                     whiteSpace: 'nowrap',
