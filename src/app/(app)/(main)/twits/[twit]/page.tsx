@@ -22,7 +22,7 @@ export default function Twit({ params }: { params: { twit: string } }) {
     );
     const [loading, setLoading] = useState(false);
 
-    const fetchData = async () =>{
+    const fetchData = async (queryParams: object | undefined) =>{
         if (!token || !params.twit) {
             return;
         }
@@ -35,6 +35,7 @@ export default function Twit({ params }: { params: { twit: string } }) {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
+                    params: queryParams as object | undefined,
                     timeout: TIMEOUT_MSECONDS,
                 }
             )
@@ -70,7 +71,8 @@ export default function Twit({ params }: { params: { twit: string } }) {
     }
     useEffect(() => {
         setLoading(true);
-        fetchData();
+        const queryParams = { withEntities: true };
+        fetchData(queryParams);
         setLoading(false);
     }, []);
 
