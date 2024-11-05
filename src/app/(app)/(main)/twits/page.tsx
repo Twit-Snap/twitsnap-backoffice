@@ -378,7 +378,8 @@ export default function Twits() {
                         <TableRow sx={{ borderBottom: '1px solid #444444', width: '100%' }}>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 20]}
-                                colSpan={3}
+                                colSpan={5}
+                                className="place-items-center"
                                 count={totalTwits || 0}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
