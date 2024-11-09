@@ -5,6 +5,7 @@ import Link from "next/link";
 import signup_logo from "@/assets/signup_dark.png";
 import users_logo from "@/assets/users_dark.png";
 import twit_logo from "@/assets/twit_logo.png";
+import metric_logo from "@/assets/metric_logo.png";
 import { redirect, usePathname } from "next/navigation";
 import { useAtom } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
@@ -72,6 +73,17 @@ export default function HomeLayout({
 						className="link_logo"
 					/>
 					<span>View all twits</span>
+				</Link>
+				<Link
+					href={"/metrics"}
+					className={`link ${isSelectedPage(pathname, "metrics")}`}>
+					<Image
+						id="metric_logo"
+						src={metric_logo}
+						alt="View all metrics logo"
+						className="link_logo"
+					/>
+					<span>View all Metrics</span>
 				</Link>
 			</nav>
 			<main id="main_content">{children}</main>
