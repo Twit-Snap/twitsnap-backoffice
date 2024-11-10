@@ -6,10 +6,10 @@ import { useRouter } from 'next/navigation';
 
 const chartOptions = [
     { id: 1, name: 'Register Chart', path: 'register-chart', description: 'Shows amount of users register, with success rate and average time vs time' },
-    { id: 2, name: 'Login Chart', path: 'login-chart', description: 'Shows amount of successfull logins, failed login attemps and average time vs time ' },
+    { id: 2, name: 'Login Chart', path: 'login-chart', description: 'Shows amount of successfully logins, failed login attempts and average time vs time ' },
     { id: 3, name: 'Register with provider Chart', path: 'register-with-provider-chart', description: 'Muestra el número de registros con identidad federada.' },
     { id: 4, name: 'Login with provider Chart ', path: 'login-with-provider-chart', description: 'Muestra el número de inicios de sesión a través de proveedores federados.' },
-    { id: 5, name: 'Locks users Chart ', path: 'locked-chart', description: 'Muestra el número de usuarios bloqueados o suspendidos.' },
+    { id: 5, name: 'Blocked users Chart ', path: 'blocked-chart', description: 'Shows the number of blocked users.' },
     //{ id: 6, name: 'Radar Chart', path: '/radar-chart', description: 'Muestra métricas de actividad por zona geográfica.' },
 ];
 
