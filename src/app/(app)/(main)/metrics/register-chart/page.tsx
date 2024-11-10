@@ -98,20 +98,20 @@ const Page: React.FC = () => {
     const RegistrationsTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
-            console.log("Tooltip data:", data);
 
             return (
                 <div
                     className="custom-tooltip"
-                     style={{
-                         backgroundColor: '#333',
-                         color: '#fff',
-                         padding: '10px',
-                         borderRadius: '5px',
-                         border: '1px solid #ccc',
-                         cursor: 'pointer',
-                         fill: 'transparent',
-                     }}>
+                    style={{
+                        backgroundColor: '#333',
+                        color: '#fff',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        border: '1px solid #ccc',
+                        cursor: 'pointer',
+                        fill: 'transparent',
+                    }}>
+                    <p>{`Date: ${data.date}`}</p>
                     <p>{`Total Registrations: ${data.totalRegistrations}`}</p>
                     <p>{`Successes: ${data.successCount} (${((data.successCount / data.totalRegistrations) * 100).toFixed(2)}%)`}</p>
                     <p>{`Failures: ${data.failureCount} (${((data.failureCount / data.totalRegistrations) * 100).toFixed(2)}%)`}</p>
@@ -138,6 +138,7 @@ const Page: React.FC = () => {
                         cursor: 'pointer',
                         fill: 'transparent',
                     }}>
+                    <p>{`Date: ${data.date}`}</p>
                     <p>{`Average Time: ${data.averageRegistrationTime}`}</p>
                 </div>
             );
