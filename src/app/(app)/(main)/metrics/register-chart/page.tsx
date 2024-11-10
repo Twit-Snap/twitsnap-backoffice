@@ -12,6 +12,7 @@ import {
     Tooltip,
     Legend,
     ResponsiveContainer,
+    LineChart, Line,
 } from 'recharts';
 
 interface RegisterData {
@@ -91,9 +92,10 @@ const Page: React.FC = () => {
         totalRegistrations: item.registerUsers,
         successCount: Math.round(item.registerUsers * item.successRate),
         failureCount: Math.round(item.registerUsers * (1 - item.successRate)),
+        averageRegistrationTime: item.averageRegistrationTime ?  parseFloat((item.averageRegistrationTime / 1000).toFixed(2)) : 0,
     }));
 
-    const CustomTooltip = ({ active, payload, label }: any) => {
+    const RegistrationsTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
             console.log("Tooltip data:", data);
@@ -119,6 +121,30 @@ const Page: React.FC = () => {
         return null;
     };
 
+    const TimeTooltip = ({ active, payload }: any) => {
+        if (active && payload && payload.length) {
+            const data = payload[0].payload;
+            console.log("Tooltip data:", data);
+
+            return (
+                <div
+                    className="custom-tooltip"
+                    style={{
+                        backgroundColor: '#333',
+                        color: '#fff',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        border: '1px solid #ccc',
+                        cursor: 'pointer',
+                        fill: 'transparent',
+                    }}>
+                    <p>{`Average Time: ${data.averageRegistrationTime}`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <div style={{padding: '20px'}}>
             <h2 style={{
@@ -128,7 +154,7 @@ const Page: React.FC = () => {
                 fontWeight: 'bold',
                 marginBottom: '20px'
             }}>
-                Register Bar Chart
+                Registrations Per Day
             </h2>
 
             <div style={{width: '100%', height: 400}}>
@@ -137,12 +163,14 @@ const Page: React.FC = () => {
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey="date"
+                            tick={{ fill: '#b6b4b4', fontSize: 14 }}
                             label={{ value: 'Date', position: 'insideBottom', offset: -20, fill: '#b6b4b4', fontSize: 20 }}
                         />
                         <YAxis
-                            label={{ value: 'Registrations', angle: -90, position: '', offset: -20, fill: '#b6b4b4', fontSize: 20 }}
+                            tick={{ fill: '#b6b4b4', fontSize: 14 }}
+                            label={{ value: 'Registrations', angle: -90, position: 'insideLeft', offset: 10, fill: '#b6b4b4', fontSize: 20, dy: 60 }}
                         />
-                        <Tooltip content={<CustomTooltip/>} cursor={{fill: 'transparent'}} active={barHovered}/>
+                        <Tooltip content={<RegistrationsTooltip/>} cursor={{fill: 'transparent'}} active={barHovered}/>
                         <Legend
                             layout="vertical"
                             align="right"
@@ -167,8 +195,41 @@ const Page: React.FC = () => {
                     </BarChart>
                 </ResponsiveContainer>
             </div>
+
+            <h2
+                style={{
+                    textAlign: 'center',
+                    color: '#b6b4b4',
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    marginBottom: '20px',
+                    marginTop: '40px'
+                }}
+            >
+                Average Registration Time Per Day
+            </h2>
+
+            <div style={{ width: '100%', height: 400 }}>
+                <ResponsiveContainer>
+                    <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 40 }}>
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                            dataKey="date"
+                            tick={{ fill: '#b6b4b4', fontSize: 14 }}
+                            label={{ value: 'Date', position: 'insideBottom', offset: -20, fill: '#b6b4b4', fontSize: 20 }}
+                        />
+                        <YAxis
+                            tick={{ fill: '#b6b4b4', fontSize: 14 }}
+                            label={{ value: 'Avg Time (s)', angle: -90, position: 'insideLeft', offset: 10, fill: '#b6b4b4', fontSize: 20, dy: 60 }}
+                        />
+                        <Tooltip content={<TimeTooltip />} />
+                        <Line type="monotone" dataKey="averageRegistrationTime" stroke="#82ca9d" dot={true} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 };
+
 
 export default Page;
