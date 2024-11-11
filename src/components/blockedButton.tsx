@@ -2,9 +2,6 @@ import { authenticatedAtom } from "@/types/authTypes";
 import {
 	LockOpenOutlined,
 	LockOutlined,
-	LockPerson,
-	LockPersonOutlined,
-	LockResetOutlined,
 } from "@mui/icons-material";
 import { Button, CircularProgress } from "@mui/material";
 import axios from "axios";
