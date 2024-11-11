@@ -67,7 +67,7 @@ const Page: React.FC = () => {
         setLoading(false);
     }, []);
 
-    if (loading) {
+    if (loading || !data) {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 {statusMessage}
@@ -75,15 +75,6 @@ const Page: React.FC = () => {
         );
     }
 
-    if (!data) {
-        return (
-            <div className="w-full h-full flex justify-center items-center">
-                <label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
-                    No data available to display.
-                </label>
-            </div>
-        );
-    }
 
     const chartData = data.map(item => ({
         date: new Date(item.date).toLocaleDateString(),
