@@ -1,7 +1,7 @@
 "use client";
 
 import { CircularProgress } from "@mui/material";
-import Checkbox, { checkboxClasses } from "@mui/material/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 import { useAtomValue } from "jotai";
 import { authenticatedAtom } from "@/types/authTypes";
 import axios from "axios";

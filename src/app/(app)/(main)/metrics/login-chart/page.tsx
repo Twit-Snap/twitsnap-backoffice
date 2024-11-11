@@ -15,6 +15,11 @@ import {
     LineChart, Line,
 } from 'recharts';
 
+import {
+    TooltipProps,
+    TooltipWithProviderProps,
+} from "@/types/metric";
+
 interface LoginData {
     date: string;
     loginUsers: number,
@@ -108,10 +113,10 @@ const Page: React.FC = () => {
 
     const chartData = loginData.map(item => ({
         date: new Date(item.date).toLocaleDateString(),
-        totalLogins: item.loginUsers,
+        total: item.loginUsers,
         successCount: item.successfulLogins,
         failureCount: item.failedLoginAttempts,
-        averageLoginTime: item.averageLoginTime ?  parseFloat((item.averageLoginTime / 1000).toFixed(2)) : 0,
+        averageTime: item.averageLoginTime ?  parseFloat((item.averageLoginTime / 1000).toFixed(2)) : 0,
     }));
 
     const chartWithProviderData = loginWithProviderData.map(item => ({
@@ -120,8 +125,7 @@ const Page: React.FC = () => {
         successCountWithProvider: item.successfulLoginsWithProvider,
     }));
 
-
-    const LoginsTooltip = ({ active, payload }: any) => {
+    const LoginTooltip: React.FC<TooltipProps>  = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
 
@@ -138,7 +142,7 @@ const Page: React.FC = () => {
                         fill: 'transparent',
                     }}>
                     <p>{`Date: ${data.date}`}</p>
-                    <p>{`Total Logins: ${data.totalRegistrations}`}</p>
+                    <p>{`Total Logins: ${data.total}`}</p>
                     <p>{`Successes: ${data.successCount} `}</p>
                     <p>{`Failures: ${data.failureCount} `}</p>
                 </div>
@@ -147,7 +151,7 @@ const Page: React.FC = () => {
         return null;
     };
 
-    const LoginsWithProviderTooltip = ({ active, payload }: any) => {
+    const LoginWithProviderTooltip: React.FC<TooltipWithProviderProps>  = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
             return (
@@ -162,10 +166,9 @@ const Page: React.FC = () => {
     };
 
 
-    const TimeTooltip = ({ active, payload }: any) => {
+    const TimeTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
-
             return (
                 <div
                     className="custom-tooltip"
@@ -179,7 +182,7 @@ const Page: React.FC = () => {
                         fill: 'transparent',
                     }}>
                     <p>{`Date: ${data.date}`}</p>
-                    <p>{`Average Time: ${data.averageLoginTime}`}</p>
+                    <p>{`Average Time: ${data.averageTime}`}</p>
                 </div>
             );
         }
@@ -226,7 +229,7 @@ const Page: React.FC = () => {
                                 dy: 30
                             }}
                         />
-                        <Tooltip content={<LoginsTooltip/>} cursor={{fill: 'transparent'}}
+                        <Tooltip content={<LoginTooltip active={false} payload={undefined}/>} cursor={{fill: 'transparent'}}
                                  active={registerBarHovered}/>
                         <Legend
                             layout="vertical"
@@ -295,7 +298,7 @@ const Page: React.FC = () => {
                             domain={[0, 'dataMax']}
                         />
                         <Tooltip
-                            content={<LoginsWithProviderTooltip/>}
+                            content={<LoginWithProviderTooltip active={false} payload={undefined}/>}
                             cursor={{fill: 'transparent'}}
                             active={registerWithProviderBarHovered}
                         />
@@ -371,8 +374,8 @@ const Page: React.FC = () => {
                                 dy: 60
                             }}
                         />
-                        <Tooltip content={<TimeTooltip/>}/>
-                        <Line type="monotone" dataKey="averageLoginTime" stroke="#82ca9d" dot={true}/>
+                        <Tooltip content={<TimeTooltip  active={false} payload={undefined} />}/>
+                        <Line type="monotone" dataKey="averageTime" stroke="#82ca9d" dot={true}/>
                     </LineChart>
                 </ResponsiveContainer>
             </div>

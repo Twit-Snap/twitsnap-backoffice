@@ -13,6 +13,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from 'recharts';
+import {TooltipBlockProps} from "@/types/metric";
 
 interface LoginData {
     date: string;
@@ -80,8 +81,7 @@ const Page: React.FC = () => {
         date: new Date(item.date).toLocaleDateString(),
         blockedUsersCount: item.blockedUsers,
     }));
-
-    const BlockedTooltip = ({ active, payload }: any) => {
+    const BlockedTooltip: React.FC<TooltipBlockProps>  = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
 
@@ -131,7 +131,7 @@ const Page: React.FC = () => {
                             tick={{ fill: '#b6b4b4', fontSize: 14 }}
                             label={{ value: 'Blocked Users', angle: -90, position: 'insideLeft', offset: 10, fill: '#b6b4b4', fontSize: 20, dy: 60 }}
                         />
-                        <Tooltip content={<BlockedTooltip/>} cursor={{fill: 'transparent'}} active={barHovered}/>
+                        <Tooltip content={<BlockedTooltip active={false} payload={undefined}/>} cursor={{fill: 'transparent'}} active={barHovered}/>
                         <Legend
                             layout="vertical"
                             align="right"

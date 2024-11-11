@@ -15,6 +15,8 @@ import {
     LineChart, Line,
 } from 'recharts';
 
+import {TooltipProps, TooltipWithProviderProps} from "@/types/metric";
+
 interface RegisterData {
     date: string;
     registerUsers: number;
@@ -109,10 +111,10 @@ const Page: React.FC = () => {
 
     const chartData = registerData.map(item => ({
         date: new Date(item.date).toLocaleDateString(),
-        totalRegistrations: item.registerUsers,
+        total: item.registerUsers,
         successCount: Math.round(item.registerUsers * item.successRate),
         failureCount: Math.round(item.registerUsers * (1 - item.successRate)),
-        averageRegistrationTime: item.averageRegistrationTime ?  parseFloat((item.averageRegistrationTime / 1000).toFixed(2)) : 0,
+        averageTime: item.averageRegistrationTime ?  parseFloat((item.averageRegistrationTime / 1000).toFixed(2)) : 0,
     }));
 
     const chartWithProviderData = registerWithProviderData.map(item => ({
@@ -120,9 +122,8 @@ const Page: React.FC = () => {
         successCount: item.successfulRegisters,
         successCountWithProvider: item.successfulRegistersWithProvider,
     }));
-    console.log(chartWithProviderData);
 
-    const RegisterTooltip = ({ active, payload }: any) => {
+    const RegisterTooltip: React.FC<TooltipProps>  = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
 
@@ -139,16 +140,16 @@ const Page: React.FC = () => {
                         fill: 'transparent',
                     }}>
                     <p>{`Date: ${data.date}`}</p>
-                    <p>{`Total Registrations: ${data.totalRegistrations}`}</p>
-                    <p>{`Successes: ${data.successCount} (${((data.successCount / data.totalRegistrations) * 100).toFixed(2)}%)`}</p>
-                    <p>{`Failures: ${data.failureCount} (${((data.failureCount / data.totalRegistrations) * 100).toFixed(2)}%)`}</p>
+                    <p>{`Total Registrations: ${data.total}`}</p>
+                    <p>{`Successes: ${data.successCount} (${((data.successCount / data.total) * 100).toFixed(2)}%)`}</p>
+                    <p>{`Failures: ${data.failureCount} (${((data.failureCount / data.total) * 100).toFixed(2)}%)`}</p>
                 </div>
             );
         }
         return null;
     };
 
-    const RegisterWithProviderTooltip = ({ active, payload }: any) => {
+    const RegisterWithProviderTooltip: React.FC<TooltipWithProviderProps>  = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
             return (
@@ -168,7 +169,7 @@ const Page: React.FC = () => {
         return null;
     };
 
-    const TimeTooltip = ({ active, payload }: any) => {
+    const TimeTooltip: React.FC<TooltipProps>  = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
 
@@ -185,7 +186,7 @@ const Page: React.FC = () => {
                         fill: 'transparent',
                     }}>
                     <p>{`Date: ${data.date}`}</p>
-                    <p>{`Average Time: ${data.averageRegistrationTime}`}</p>
+                    <p>{`Average Time: ${data.averageTime}`}</p>
                 </div>
             );
         }
@@ -233,7 +234,7 @@ const Page: React.FC = () => {
                                 dy: 60
                             }}
                         />
-                        <Tooltip content={<RegisterTooltip/>} cursor={{fill: 'transparent'}} active={registerBarHovered}/>
+                        <Tooltip content={<RegisterTooltip  active={false} payload={undefined}/>} cursor={{fill: 'transparent'}} active={registerBarHovered} />
                         <Legend
                             layout="vertical"
                             align="right"
@@ -296,7 +297,7 @@ const Page: React.FC = () => {
                                     dy: 100
                                 }}
                             />
-                            <Tooltip content={<RegisterWithProviderTooltip/>} cursor={{fill: 'transparent'}} active={registerWithProviderBarHovered}/>
+                            <Tooltip content={<RegisterWithProviderTooltip active={false} payload={undefined}/>} cursor={{fill: 'transparent'}} active={registerWithProviderBarHovered}/>
                             <Legend
                                 layout="vertical"
                                 align="right"
@@ -361,8 +362,8 @@ const Page: React.FC = () => {
                                     dy: 60
                                 }}
                             />
-                            <Tooltip content={<TimeTooltip/>}/>
-                            <Line type="monotone" dataKey="averageRegistrationTime" stroke="#82ca9d" dot={true}/>
+                            <Tooltip content={<TimeTooltip  active={false} payload={undefined}/>}/>
+                            <Line type="monotone" dataKey="averageTime" stroke="#82ca9d" dot={true}/>
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
