@@ -36,7 +36,8 @@ const Page: React.FC = () => {
     const [statusMessage, setStatusMessage] = useState(
         <CircularProgress size="10rem" />
     );
-    const [barHovered, setBarHovered] = useState(false);
+    const [registerBarHovered, setRegisterBarHovered] = useState(false);
+    const [registerWithProviderBarHovered, setRegisterWithProviderBarHovered] = useState(false);
 
     function handleError(error: { code: string; response: { status: number; }; }) {
         if (error.code === "ECONNABORTED") {
@@ -97,20 +98,10 @@ const Page: React.FC = () => {
         setLoading(false);
     }, []);
 
-    if (loading) {
+    if (loading || !loginData || !loginWithProviderData) {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 {statusMessage}
-            </div>
-        );
-    }
-
-    if (!loginData || !loginWithProviderData) {
-        return (
-            <div className="w-full h-full flex justify-center items-center">
-                <label className="text-[1.1rem] text-[rgb(255,75,75)] font-[500]">
-                    No data available to display.
-                </label>
             </div>
         );
     }
@@ -202,7 +193,8 @@ const Page: React.FC = () => {
                 color: '#b6b4b4',
                 fontSize: '24px',
                 fontWeight: 'bold',
-                marginBottom: '20px'
+                marginBottom: '20px',
+                marginTop: '60px'
             }}>
                 Logins Per Day
             </h2>
@@ -235,7 +227,7 @@ const Page: React.FC = () => {
                             }}
                         />
                         <Tooltip content={<LoginsTooltip/>} cursor={{fill: 'transparent'}}
-                                 active={barHovered}/>
+                                 active={registerBarHovered}/>
                         <Legend
                             layout="vertical"
                             align="right"
@@ -250,12 +242,12 @@ const Page: React.FC = () => {
                         />
                         {}
                         <Bar dataKey="successCount" fill="#82ca9d" stackId="a" name="Successes"
-                             onMouseEnter={() => setBarHovered(true)}
-                             onMouseLeave={() => setBarHovered(false)}
+                             onMouseEnter={() => setRegisterBarHovered(true)}
+                             onMouseLeave={() => setRegisterBarHovered(false)}
                         />
                         <Bar dataKey="failureCount" fill="#ff6347" stackId="a" name="Failures"
-                             onMouseEnter={() => setBarHovered(true)}
-                             onMouseLeave={() => setBarHovered(false)}
+                             onMouseEnter={() => setRegisterBarHovered(true)}
+                             onMouseLeave={() => setRegisterBarHovered(false)}
                         />
                     </BarChart>
                 </ResponsiveContainer>
@@ -266,7 +258,8 @@ const Page: React.FC = () => {
                 color: '#b6b4b4',
                 fontSize: '24px',
                 fontWeight: 'bold',
-                marginBottom: '20px'
+                marginBottom: '20px',
+                marginTop: '60px'
             }}>
                 Logins vs Logins with Provider Per Day
             </h2>
@@ -299,10 +292,12 @@ const Page: React.FC = () => {
                                 fontSize: 20,
                                 dy: 60
                             }}
+                            domain={[0, 'dataMax']}
                         />
                         <Tooltip
                             content={<LoginsWithProviderTooltip/>}
                             cursor={{fill: 'transparent'}}
+                            active={registerWithProviderBarHovered}
                         />
                         <Legend
                             layout="vertical"
@@ -320,11 +315,17 @@ const Page: React.FC = () => {
                             dataKey="successCount"
                             fill="#82ca9d"
                             name="Logins"
+                            stackId="a"
+                            onMouseEnter={() => setRegisterWithProviderBarHovered(true)}
+                            onMouseLeave={() => setRegisterWithProviderBarHovered(false)}
                         />
                         <Bar
                             dataKey="successCountWithProvider"
                             fill="#4797ff"
                             name="Logins with Provider"
+                            stackId="b"
+                            onMouseEnter={() => setRegisterWithProviderBarHovered(true)}
+                            onMouseLeave={() => setRegisterWithProviderBarHovered(false)}
                         />
                     </BarChart>
                 </ResponsiveContainer>
@@ -337,7 +338,7 @@ const Page: React.FC = () => {
                     fontSize: '24px',
                     fontWeight: 'bold',
                     marginBottom: '20px',
-                    marginTop: '40px'
+                    marginTop: '60px',
                 }}
             >
                 Average Login Time Per Day
