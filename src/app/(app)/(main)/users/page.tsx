@@ -463,9 +463,9 @@ export default function Twits() {
 										disableRipple={true}
 										sx={{
 											"&.Mui-disabled": {
-											  color: "rgb(150 150 150)"
-											}
-										  }}
+												color: "rgb(150 150 150)",
+											},
+										}}
 									/>
 								</TableCell>
 								<TableCell
