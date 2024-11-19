@@ -139,6 +139,34 @@ export default function Twits() {
 		router.push(`/users/${username}`);
 	};
 
+	const setBlockedState = async (
+		isBlocked: boolean,
+		identification: string
+	): Promise<boolean> => {
+		return await axios
+			.patch(
+				`${process.env.NEXT_PUBLIC_USER_SERVER_URL}/users/${identification}`,
+				{
+					isBlocked: !isBlocked,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+					timeout: TIMEOUT_MSECONDS,
+				}
+			)
+			.then(({ data }) => {
+				console.log(
+					"Blocked user '",
+					data.username,
+					"' block state: ",
+					data.isBlocked
+				);
+				return data.isBlocked;
+			});
+	};
+
 	const handleChangePage = useCallback(
 		(
 			event: React.MouseEvent<HTMLButtonElement> | null,
@@ -480,8 +508,9 @@ export default function Twits() {
 										textAlign: "center",
 									}}>
 									<BlockedButton
-										username={user.username}
+										identification={user.username}
 										initIsBlocked={user.isBlocked}
+										onClick={setBlockedState}
 									/>
 								</TableCell>
 							</TableRow>
