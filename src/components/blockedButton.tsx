@@ -1,11 +1,6 @@
-import { authenticatedAtom } from "@/types/authTypes";
 import { LockOpenOutlined, LockOutlined } from "@mui/icons-material";
 import { Button, CircularProgress } from "@mui/material";
-import axios from "axios";
-import { useAtomValue } from "jotai";
 import { MouseEvent, useState } from "react";
-
-const TIMEOUT_MSECONDS = 5000;
 
 interface BlockedButtonProps {
 	identification: string;
