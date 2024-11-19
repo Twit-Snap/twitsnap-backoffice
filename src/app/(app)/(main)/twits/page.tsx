@@ -30,6 +30,7 @@ import { useRouter } from "next/navigation";
 
 import { TwitType } from "@/types/twit";
 import SearchModel from "./searchModel";
+import BlockedButton from "@/components/blockedButton";
 
 const TIMEOUT_MSECONDS = 5000;
 
@@ -147,6 +148,34 @@ export default function Twits() {
 	};
 
 	const router = useRouter(); // Inicias el router
+
+	const setBlockedState = async (
+		isBlocked: boolean,
+		identification: string
+	): Promise<boolean> => {
+		return axios
+			.patch(
+				`${process.env.NEXT_PUBLIC_TWIT_SERVER_URL}/snaps/${identification}`,
+				{
+					isBlocked: !isBlocked,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+					timeout: TIMEOUT_MSECONDS,
+				}
+			)
+			.then(({ data }) => {
+				console.log(
+					"Blocked twit '",
+					data.data.id,
+					"' block state: ",
+					data.data.isBlocked
+				);
+				return data.data.isBlocked;
+			});
+	};
 
 	// Función para manejar la navegación cuando se hace clic en una fila
 	const handleRowClick = (twitId: string) => {
@@ -406,6 +435,16 @@ export default function Twits() {
 								}}>
 								Content
 							</TableCell>
+							<TableCell
+								align="left"
+								sx={{
+									backgroundColor: "#191919",
+									color: "#b6b4b4",
+									borderColor: "#444444",
+									textAlign: "center",
+								}}>
+								Blocked
+							</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -466,6 +505,23 @@ export default function Twits() {
 										borderColor: "#444444",
 									}}>
 									{twit.content}
+								</TableCell>
+								<TableCell
+									align="left"
+									sx={{
+										whiteSpace: "nowrap",
+										overflow: "hidden",
+										textOverflow: "ellipsis",
+										maxWidth: 100,
+										color: "#b6b4b4",
+										borderColor: "#444444",
+										textAlign: "center",
+									}}>
+									<BlockedButton
+										initIsBlocked={twit.isBlocked}
+										identification={twit.id}
+										onClick={setBlockedState}
+									/>
 								</TableCell>
 							</TableRow>
 						))}
