@@ -83,7 +83,9 @@ export default function User({ params }: { params: { user: string } }) {
 				/>
 			</div>
 			<div className="w-full bg-[#868686] shadow rounded-r-md border-gray border-l-2">
-				<List style={{ backgroundColor: '#25252b', color: '#b6b4b4' }} className="w-full overflow-auto max-h-full">
+				<List
+					style={{ backgroundColor: "#25252b", color: "#b6b4b4" }}
+					className="w-full overflow-auto max-h-full">
 					{Object.entries(user).map(([k, v]) => (
 						<div className="px-2" key={`${k}`}>
 							<ListItem>
@@ -93,7 +95,7 @@ export default function User({ params }: { params: { user: string } }) {
 											<label className="font-bold capitalize cursor-text text-customTextColor">
 												{k}
 											</label>
-											<hr className="border-t border-customBorder my-4 "/>
+											<hr className="border-t border-customBorder my-4 " />
 										</>
 									}
 									secondary={

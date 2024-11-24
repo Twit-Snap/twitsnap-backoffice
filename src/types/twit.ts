@@ -7,6 +7,7 @@ export type TwitType = {
     content: string;
     entities: Entities;
     likes_count: number;
+    isBlocked: boolean
 }
 
 type Hashtag = {
