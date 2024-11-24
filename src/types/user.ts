@@ -8,4 +8,5 @@ export type UserType = {
 	createdAt: string;
 	isPrivate: boolean;
 	isBlocked: boolean;
+	profilePicture: string;
 };
