@@ -23,6 +23,12 @@ const chartOptions = [
         name: 'Location charts',
         path: 'location-chart',
         description: 'Shows the distribution of the users around the world'
+    },
+    {
+        id: 5,
+        name: 'Twits charts',
+        path: 'twit-chart',
+        description: 'Shows twits filtered by user vs time and total twits'
     }
 ];
 

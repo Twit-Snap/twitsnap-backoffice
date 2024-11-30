@@ -22,6 +22,11 @@ interface ChartLocationData {
     amount: number;
 }
 
+interface CharTwitsData{
+    date: string;
+    total: number;
+}
+
 type TooltipPayload = {
     payload: ChartData;
 };
@@ -36,6 +41,10 @@ type TooltipBlockPayload = {
 
 type TooltipLocationPayload = {
     payload: ChartLocationData;
+}
+
+type TooltipTwitsPayload = {
+    payload: CharTwitsData;
 }
 
 export interface TooltipProps {
@@ -57,4 +66,9 @@ export interface TooltipLocationProps {
     active: boolean;
     payload: TooltipLocationPayload[] | undefined;
 
+}
+
+export interface TooltipTwtisProps {
+    active: boolean;
+    payload: TooltipTwitsPayload[] | undefined;
 }
