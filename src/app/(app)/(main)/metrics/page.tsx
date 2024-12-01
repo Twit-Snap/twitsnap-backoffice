@@ -26,8 +26,8 @@ const chartOptions = [
     },
     {
         id: 5,
-        name: 'Twits charts',
-        path: 'twit-chart',
+        name: 'Content charts',
+        path: 'content-chart',
         description: 'Shows twits filtered by user vs time and total twits'
     }
 ];

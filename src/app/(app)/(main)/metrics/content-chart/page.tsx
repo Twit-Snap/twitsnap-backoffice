@@ -13,7 +13,7 @@ import {
     Line,
 } from "recharts";
 
-import { TooltipTwtisProps } from "@/types/metric";
+import {TooltipHashtagProps, TooltipTwitsProps} from "@/types/metric";
 import { format } from "date-fns";
 
 interface TwitData {
@@ -27,8 +27,16 @@ interface CompleteTwitData {
     twits:  TwitData[]
 }
 
+interface Hashtag {
+    hashtag: string;
+    amount: number;
+    date: Date
+}
+
+
 const Page: React.FC = () => {
     const [ twitData, setTwitData] = useState<CompleteTwitData | null>(null);
+    const [hashtagData, setHashtagData] = useState<Hashtag[] | null>(null);
     const [loading, setLoading] = useState(true);
     const [statusMessage, setStatusMessage] = useState(
         <CircularProgress size="10rem" />
@@ -60,6 +68,19 @@ const Page: React.FC = () => {
         }
     }
 
+    const fetchHashtagData = async () => {
+        axios
+            .get(`${process.env.NEXT_PUBLIC_METRICS_SERVER_URL}/metrics`, {
+                params: { type: "hashtag", auth: false},
+            })
+            .then((response) => {
+                setHashtagData(response.data.data);
+            })
+            .catch((error) => {
+                handleError(error);
+            });
+    }
+
     const fetchTwitData = async () => {
         axios
             .get(`${process.env.NEXT_PUBLIC_METRICS_SERVER_URL}/metrics`, {
@@ -76,10 +97,11 @@ const Page: React.FC = () => {
     useEffect(() => {
         setLoading(true);
         fetchTwitData();
+        fetchHashtagData();
         setLoading(false);
     }, []);
 
-    if (loading || !twitData) {
+    if (loading || !twitData || !hashtagData) {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 {statusMessage}
@@ -87,14 +109,32 @@ const Page: React.FC = () => {
         );
     }
 
-    const chartData = twitData.twits.map((item) => ({
+    const chartTwitData = twitData.twits.map((item) => ({
         date: format(new Date(item.date), "dd/MM/yyyy"),
         total: item.amount,
 
     }));
 
 
-    const TwitsTooltip: React.FC<TooltipTwtisProps> = ({ active, payload }) => {
+
+    const chartHashtagData = hashtagData.map((item) => ({
+        date: format(new Date(item.date), "dd/MM/yyyy"),
+        hashtag: item.hashtag,
+        total: item.amount,
+    }));
+
+    const formattedData = hashtagData.map((item) => ({
+        ...item,
+        date: format(new Date(item.date), "dd/MM/yyyy"),
+    }));
+
+    // Obtener todos los hashtags únicos
+    const uniqueHashtags = Array.from(
+        new Set(formattedData.map((item) => item.hashtag))
+    );
+
+
+    const TwitsTooltip: React.FC<TooltipTwitsProps> = ({ active, payload }) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
 
@@ -109,6 +149,7 @@ const Page: React.FC = () => {
                         border: "1px solid #ccc",
                         cursor: "pointer",
                         fill: "transparent",
+
                     }}>
                     <p>{`Date: ${data.date}`}</p>
                     <p>{`Total Twits: ${data.total}`}</p>
@@ -118,8 +159,35 @@ const Page: React.FC = () => {
         return null;
     };
 
+    const HashtagTooltip: React.FC<TooltipHashtagProps> = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+            const data = payload[0].payload;
 
-    console.log(twitData);
+            return (
+                <div
+                    className="custom-tooltip"
+                    style={{
+                        backgroundColor: "#333",
+                        color: "#fff",
+                        padding: "10px",
+                        borderRadius: "5px",
+                        border: "1px solid #ccc",
+                        cursor: "pointer",
+                        fill: "transparent",
+
+                    }}>
+                    <p>{`Date: ${data.date}`}</p>
+                    <p>{`Amount:${data.amount}`}</p>
+                    <p>{`Hashtag: ${data.hashtag}`}</p>
+                </div>
+            );
+        }
+        return null;
+    };
+
+
+
+
     return (
         <div style={{padding: "20px"}}>
             <h2
@@ -157,7 +225,7 @@ const Page: React.FC = () => {
                 <div style={{width: "100%", height: 400}}>
                     <ResponsiveContainer>
                         <LineChart
-                            data={chartData}
+                            data={chartTwitData}
                             margin={{top: 20, right: 30, left: 20, bottom: 40}}>
                             <CartesianGrid vertical={false}/>
                             <XAxis
@@ -184,9 +252,81 @@ const Page: React.FC = () => {
                                 }}
                                 allowDecimals={false}
                             />
+                            <Tooltip />
+                            {uniqueHashtags.map((hashtag) => (
+                                <Line
+                                    key={hashtag}
+                                    type="monotone"
+                                    dataKey={(entry) =>
+                                        entry.hashtag === hashtag
+                                            ? entry.amount
+                                            : null
+                                    }
+                                    name={hashtag}
+                                    stroke={`#${Math.floor(
+                                        Math.random() * 16777215
+                                    ).toString(16)}`} // Color aleatorio para cada hashtag
+                                    dot={false}
+                                />
+                            ))}
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+
+            <h2
+                style={{
+                    textAlign: "center",
+                    color: "#b6b4b4",
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                    marginBottom: "20px",
+                    marginTop: "60px",
+                }}>
+                Hashtags Per Day
+            </h2>
+
+            <div
+                style={{
+                    textAlign: "right",
+                    marginBottom: "20px",
+                    padding: "10px",
+                    backgroundColor: "#f0f0f0",
+                    borderRadius: "8px",
+                }}>
+                <div style={{width: "100%", height: 400}}>
+                    <ResponsiveContainer>
+                        <LineChart
+                            data={chartHashtagData}
+                            margin={{top: 20, right: 30, left: 20, bottom: 40}}>
+                            <CartesianGrid vertical={false}/>
+                            <XAxis
+                                dataKey="date"
+                                tick={{fill: "#b6b4b4", fontSize: 14}}
+                                label={{
+                                    value: "Date",
+                                    position: "insideBottom",
+                                    offset: -20,
+                                    fill: "#b6b4b4",
+                                    fontSize: 20,
+                                }}
+                            />
+                            <YAxis
+                                tick={{fill: "#b6b4b4", fontSize: 14}}
+                                label={{
+                                    value: "Amount of Hashtags",
+                                    angle: -90,
+                                    position: "insideLeft",
+                                    offset: 10,
+                                    fill: "#b6b4b4",
+                                    fontSize: 20,
+                                    dy: 60,
+                                }}
+                                allowDecimals={false}
+                            />
                             <Tooltip
                                 content={
-                                    <TwitsTooltip
+                                    <HashtagTooltip
                                         active={false}
                                         payload={undefined}
                                     />
@@ -194,7 +334,7 @@ const Page: React.FC = () => {
                             />
                             <Line
                                 type="monotone"
-                                dataKey="total"
+                                dataKey="amount"
                                 stroke="#82ca9d"
                                 dot={true}
                             />
