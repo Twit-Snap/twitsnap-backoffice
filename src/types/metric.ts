@@ -85,5 +85,6 @@ export interface TooltipTwitsProps {
 
 export interface  TooltipHashtagProps {
     active: boolean;
-    payload: TooltipHashtagPayload[] | undefined;
+    payload: any;//TooltipHashtagPayload[] | undefined;
+    label: string;
 }

@@ -27,16 +27,16 @@ interface CompleteTwitData {
     twits:  TwitData[]
 }
 
-interface Hashtag {
-    hashtag: string;
-    amount: number;
-    date: Date
+interface HashtagData {
+    date: Date;
+    hashtags: Record<string, number>;
 }
+
 
 
 const Page: React.FC = () => {
     const [ twitData, setTwitData] = useState<CompleteTwitData | null>(null);
-    const [hashtagData, setHashtagData] = useState<Hashtag[] | null>(null);
+    const [hashtagData, setHashtagData] = useState<HashtagData[] | null>(null);
     const [loading, setLoading] = useState(true);
     const [statusMessage, setStatusMessage] = useState(
         <CircularProgress size="10rem" />
@@ -116,22 +116,22 @@ const Page: React.FC = () => {
     }));
 
 
-
+/*
     const chartHashtagData = hashtagData.map((item) => ({
         date: format(new Date(item.date), "dd/MM/yyyy"),
         hashtag: item.hashtag,
         total: item.amount,
     }));
 
-    const formattedData = hashtagData.map((item) => ({
-        ...item,
-        date: format(new Date(item.date), "dd/MM/yyyy"),
+ */
+    // Transformar los datos para el gráfico
+    const chartData = hashtagData.map((item) => ({
+        date: format(new Date(item.date), "yyyy-MM-dd"),
+        ...item.hashtags,
     }));
 
-    // Obtener todos los hashtags únicos
-    const uniqueHashtags = Array.from(
-        new Set(formattedData.map((item) => item.hashtag))
-    );
+    // Obtener las claves únicas de hashtags
+    const uniqueHashtags = Object.keys(hashtagData[0].hashtags);
 
 
     const TwitsTooltip: React.FC<TooltipTwitsProps> = ({ active, payload }) => {
@@ -159,9 +159,9 @@ const Page: React.FC = () => {
         return null;
     };
 
-    const HashtagTooltip: React.FC<TooltipHashtagProps> = ({ active, payload }) => {
+    const HashtagTooltip: React.FC<TooltipHashtagProps> = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
-            const data = payload[0].payload;
+            const { dataKey, value } = payload[0];
 
             return (
                 <div
@@ -176,17 +176,17 @@ const Page: React.FC = () => {
                         fill: "transparent",
 
                     }}>
-                    <p>{`Date: ${data.date}`}</p>
-                    <p>{`Amount:${data.amount}`}</p>
-                    <p>{`Hashtag: ${data.hashtag}`}</p>
+                    <p>{`Date: ${label}`}</p>
+                    <p>{`Amount:${value}`}</p>
+                    <p>{`Hashtag: ${dataKey}`}</p>
                 </div>
             );
         }
         return null;
     };
 
-
-
+    console.log(uniqueHashtags);
+    console.log('data receive', hashtagData);
 
     return (
         <div style={{padding: "20px"}}>
@@ -252,27 +252,29 @@ const Page: React.FC = () => {
                                 }}
                                 allowDecimals={false}
                             />
-                            <Tooltip />
-                            {uniqueHashtags.map((hashtag) => (
-                                <Line
-                                    key={hashtag}
-                                    type="monotone"
-                                    dataKey={(entry) =>
-                                        entry.hashtag === hashtag
-                                            ? entry.amount
-                                            : null
-                                    }
-                                    name={hashtag}
-                                    stroke={`#${Math.floor(
-                                        Math.random() * 16777215
-                                    ).toString(16)}`} // Color aleatorio para cada hashtag
-                                    dot={false}
-                                />
-                            ))}
+                            <Tooltip
+                                content={
+                                    <TwitsTooltip
+                                        active={false}
+                                        payload={undefined}
+                                    />
+                                }
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="total"
+                                stroke="#82ca9d"
+                                dot={true}
+                            />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
             </div>
+
+
+
+
+
 
             <h2
                 style={{
@@ -297,7 +299,7 @@ const Page: React.FC = () => {
                 <div style={{width: "100%", height: 400}}>
                     <ResponsiveContainer>
                         <LineChart
-                            data={chartHashtagData}
+                            data={chartData}
                             margin={{top: 20, right: 30, left: 20, bottom: 40}}>
                             <CartesianGrid vertical={false}/>
                             <XAxis
@@ -314,7 +316,7 @@ const Page: React.FC = () => {
                             <YAxis
                                 tick={{fill: "#b6b4b4", fontSize: 14}}
                                 label={{
-                                    value: "Amount of Hashtags",
+                                    value: "Hashtags",
                                     angle: -90,
                                     position: "insideLeft",
                                     offset: 10,
@@ -324,20 +326,21 @@ const Page: React.FC = () => {
                                 }}
                                 allowDecimals={false}
                             />
-                            <Tooltip
-                                content={
-                                    <HashtagTooltip
-                                        active={false}
-                                        payload={undefined}
-                                    />
-                                }
-                            />
-                            <Line
-                                type="monotone"
-                                dataKey="amount"
-                                stroke="#82ca9d"
-                                dot={true}
-                            />
+                            <Tooltip  />
+
+                            {/* Generar dinámicamente las líneas */}
+                            {uniqueHashtags.map((hashtag) => (
+                                <Line
+                                    key={hashtag}
+                                    type="monotone"
+                                    dataKey={hashtag}
+                                    name={hashtag}
+                                    stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} // Color aleatorio
+                                    dot={true}
+                                    connectNulls={true}
+                                    fill={0}
+                                />
+                            ))}
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
