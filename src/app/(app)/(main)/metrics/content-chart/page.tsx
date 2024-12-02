@@ -13,7 +13,7 @@ import {
     Line,
 } from "recharts";
 
-import {TooltipHashtagProps, TooltipTwitsProps} from "@/types/metric";
+import {TooltipTwitsProps} from "@/types/metric";
 import { format } from "date-fns";
 
 interface TwitData {
@@ -153,32 +153,6 @@ const Page: React.FC = () => {
                     }}>
                     <p>{`Date: ${data.date}`}</p>
                     <p>{`Total Twits: ${data.total}`}</p>
-                </div>
-            );
-        }
-        return null;
-    };
-
-    const HashtagTooltip: React.FC<TooltipHashtagProps> = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-            const { dataKey, value } = payload[0];
-
-            return (
-                <div
-                    className="custom-tooltip"
-                    style={{
-                        backgroundColor: "#333",
-                        color: "#fff",
-                        padding: "10px",
-                        borderRadius: "5px",
-                        border: "1px solid #ccc",
-                        cursor: "pointer",
-                        fill: "transparent",
-
-                    }}>
-                    <p>{`Date: ${label}`}</p>
-                    <p>{`Amount:${value}`}</p>
-                    <p>{`Hashtag: ${dataKey}`}</p>
                 </div>
             );
         }
@@ -338,7 +312,6 @@ const Page: React.FC = () => {
                                     stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} // Color aleatorio
                                     dot={true}
                                     connectNulls={true}
-                                    fill={0}
                                 />
                             ))}
                         </LineChart>

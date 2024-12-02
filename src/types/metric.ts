@@ -27,11 +27,6 @@ interface CharTwitsData{
     total: number;
 }
 
-interface ChartHashtagData {
-    date: string;
-    hashtag: string;
-    amount: number;
-}
 
 type TooltipPayload = {
     payload: ChartData;
@@ -53,9 +48,6 @@ type TooltipTwitsPayload = {
     payload: CharTwitsData;
 }
 
-type TooltipHashtagPayload = {
-    payload: ChartHashtagData;
-}
 
 export interface TooltipProps {
     active: boolean;
@@ -81,10 +73,4 @@ export interface TooltipLocationProps {
 export interface TooltipTwitsProps {
     active: boolean;
     payload: TooltipTwitsPayload[] | undefined;
-}
-
-export interface  TooltipHashtagProps {
-    active: boolean;
-    payload: any;//TooltipHashtagPayload[] | undefined;
-    label: string;
 }
