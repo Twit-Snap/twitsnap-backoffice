@@ -28,7 +28,13 @@ const chartOptions = [
         id: 5,
         name: 'Content charts',
         path: 'content-chart',
-        description: 'Shows twits filtered by user vs time and total twits'
+        description: 'Shows twits filtered by user vs time and hashtag vs time'
+    },
+    {
+        id: 6,
+        name: 'Restore password charts',
+        path: 'password-chart',
+        description: 'Shows amount of successful and failed restore password attempts and average time'
     }
 ];
 
