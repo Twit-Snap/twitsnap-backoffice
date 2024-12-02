@@ -14,6 +14,7 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { TooltipBlockProps } from "@/types/metric";
+import { format } from "date-fns";
 
 interface LoginData {
 	date: string;
@@ -76,7 +77,7 @@ const Page: React.FC = () => {
 	}
 
 	const chartData = data.map((item) => ({
-		date: new Date(item.date).toLocaleDateString(),
+		date: format(new Date(item.date), "dd/MM/yyyy"),
 		blockedUsersCount: item.blockedUsers,
 	}));
 	const BlockedTooltip: React.FC<TooltipBlockProps> = ({

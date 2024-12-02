@@ -17,6 +17,7 @@ import {
 } from "recharts";
 
 import { TooltipProps, TooltipWithProviderProps } from "@/types/metric";
+import { format } from "date-fns";
 
 interface RegisterData {
 	date: string;
@@ -113,7 +114,7 @@ const Page: React.FC = () => {
 	}
 
 	const chartData = registerData.map((item) => ({
-		date: new Date(item.date).toLocaleDateString(),
+		date: format(new Date(item.date), "dd/MM/yyyy"),
 		total: item.registerUsers,
 		successCount: Math.round(item.registerUsers * item.successRate),
 		failureCount: Math.round(item.registerUsers * (1 - item.successRate)),
@@ -123,7 +124,7 @@ const Page: React.FC = () => {
 	}));
 
 	const chartWithProviderData = registerWithProviderData.map((item) => ({
-		date: new Date(item.date).toLocaleDateString(),
+		date: format(new Date(item.date), "dd/MM/yyyy"),
 		successCount: item.successfulRegisters,
 		successCountWithProvider: item.successfulRegistersWithProvider,
 	}));

@@ -1,4 +1,3 @@
-
 interface ChartData {
     date: string;
     total: number;
@@ -18,6 +17,17 @@ interface ChartBlockData {
     blockedUsersCount: number;
 }
 
+interface ChartLocationData {
+    country: string;
+    amount: number;
+}
+
+interface CharTwitsData{
+    date: string;
+    total: number;
+}
+
+
 type TooltipPayload = {
     payload: ChartData;
 };
@@ -29,6 +39,15 @@ type TooltipWithProviderPayload = {
 type TooltipBlockPayload = {
     payload: ChartBlockData;
 };
+
+type TooltipLocationPayload = {
+    payload: ChartLocationData;
+}
+
+type TooltipTwitsPayload = {
+    payload: CharTwitsData;
+}
+
 
 export interface TooltipProps {
     active: boolean;
@@ -43,4 +62,15 @@ export interface TooltipWithProviderProps {
 export interface TooltipBlockProps {
     active: boolean;
     payload: TooltipBlockPayload[] | undefined;
+}
+
+export interface TooltipLocationProps {
+    active: boolean;
+    payload: TooltipLocationPayload[] | undefined;
+
+}
+
+export interface TooltipTwitsProps {
+    active: boolean;
+    payload: TooltipTwitsPayload[] | undefined;
 }

@@ -19,6 +19,7 @@ import {
     TooltipProps,
     TooltipWithProviderProps,
 } from "@/types/metric";
+import { format } from "date-fns";
 
 interface LoginData {
     date: string;
@@ -112,7 +113,7 @@ const Page: React.FC = () => {
     }
 
     const chartData = loginData.map(item => ({
-        date: new Date(item.date).toLocaleDateString(),
+        date: format(new Date(item.date), "dd/MM/yyyy"),
         total: item.loginUsers,
         successCount: item.successfulLogins,
         failureCount: item.failedLoginAttempts,
@@ -120,7 +121,7 @@ const Page: React.FC = () => {
     }));
 
     const chartWithProviderData = loginWithProviderData.map(item => ({
-        date: new Date(item.date).toLocaleDateString(),
+        date: format(new Date(item.date), "dd/MM/yyyy"),
         successCount: item.successfulLogins,
         successCountWithProvider: item.successfulLoginsWithProvider,
     }));
