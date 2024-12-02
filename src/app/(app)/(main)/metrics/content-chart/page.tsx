@@ -115,23 +115,12 @@ const Page: React.FC = () => {
 
     }));
 
-
-/*
-    const chartHashtagData = hashtagData.map((item) => ({
-        date: format(new Date(item.date), "dd/MM/yyyy"),
-        hashtag: item.hashtag,
-        total: item.amount,
-    }));
-
- */
-    // Transformar los datos para el gráfico
     const chartData = hashtagData.map((item) => ({
         date: format(new Date(item.date), "yyyy-MM-dd"),
         ...item.hashtags,
     }));
 
-    // Obtener las claves únicas de hashtags
-    const uniqueHashtags = Object.keys(hashtagData[0].hashtags);
+    const uniqueHashtags = hashtagData.length === 0 ?  [] : Object.keys(hashtagData[0].hashtags);
 
 
     const TwitsTooltip: React.FC<TooltipTwitsProps> = ({ active, payload }) => {
@@ -158,9 +147,6 @@ const Page: React.FC = () => {
         }
         return null;
     };
-
-    console.log(uniqueHashtags);
-    console.log('data receive', hashtagData);
 
     return (
         <div style={{padding: "20px"}}>
