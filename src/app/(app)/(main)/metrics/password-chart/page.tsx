@@ -21,9 +21,10 @@ import { format } from "date-fns";
 
 interface PasswordData {
     date: string;
-    passwordRecoveryAmount: number;
-    averagePasswordRecoveryTime: number | null;
-    successRate: number;
+    recoveryAttempts: number;
+    successfulRecoveries: number,
+    failedRecoveryAttempts: number,
+    averageRecoveryTime:number
 }
 
 
@@ -90,14 +91,13 @@ const Page: React.FC = () => {
         );
     }
 
-    const chartData = passwordData.map((item) => ({
+
+    const chartData = passwordData.map(item => ({
         date: format(new Date(item.date), "dd/MM/yyyy"),
-        total: item.passwordRecoveryAmount,
-        successCount: Math.round(item.passwordRecoveryAmount * item.successRate),
-        failureCount: Math.round(item.passwordRecoveryAmount * (1 - item.successRate)),
-        averageTime: item.averagePasswordRecoveryTime
-            ? parseFloat((item.averagePasswordRecoveryTime / 1000).toFixed(2))
-            : 0,
+        total: item.recoveryAttempts,
+        successCount: item.successfulRecoveries,
+        failureCount: item.failedRecoveryAttempts,
+        averageTime: item.averageRecoveryTime ?  parseFloat((item.averageRecoveryTime / 1000).toFixed(2)) : 0,
     }));
 
 
@@ -169,7 +169,7 @@ const Page: React.FC = () => {
                     marginBottom: "20px",
                     marginTop: "60px",
                 }}>
-                Registrations Per Day
+                Password recovery Per Day
             </h2>
 
             <div style={{ width: "100%", height: 400 }}>
