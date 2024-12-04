@@ -42,7 +42,6 @@ export default function Twit({params}: { params: { twit: string } }) {
                 }
             )
             .then((response) => {
-                console.log(response.data.data);
                 setTwit(response.data.data);
             })
             .catch((error) => {
@@ -115,7 +114,11 @@ export default function Twit({params}: { params: { twit: string } }) {
                         ([key]) =>
                             key !== "userLiked" &&
                             key !== "user" &&
-                            key !== "entities"
+                            key !== "entities" &&
+                            key !== "parent" &&
+                            key !== "userRetwitted"  &&
+                            key !== "isBlocked" &&
+                            key !== "userBookmarked"
                     )
                     .map(([k, v]) => (
                         <div className="px-2" key={`${k}`}>

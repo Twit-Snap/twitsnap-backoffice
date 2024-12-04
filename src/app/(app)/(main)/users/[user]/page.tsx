@@ -87,7 +87,14 @@ export default function User({ params }: { params: { user: string } }) {
 				<List
 					style={{ backgroundColor: "#25252b", color: "#b6b4b4" }}
 					className="w-full overflow-auto max-h-full">
-					{Object.entries(user).map(([k, v]) => (
+					{Object.entries(user)
+						.filter(
+							([key]) =>
+								key !== "profilePicture" &&
+								key !== "expoToken" &&
+								key !== "isBlocked" &&
+								key !== "ssoUid"
+						).map(([k, v]) => (
 						<div className="px-2" key={`${k}`}>
 							<ListItem>
 								<ListItemText
