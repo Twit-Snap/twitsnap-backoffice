@@ -19,7 +19,6 @@ import {
     TooltipProps,
     TooltipWithProviderProps,
 } from "@/types/metric";
-import { format } from "date-fns";
 
 interface LoginData {
     date: string;

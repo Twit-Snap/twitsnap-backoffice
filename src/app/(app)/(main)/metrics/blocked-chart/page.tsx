@@ -14,7 +14,6 @@ import {
 	ResponsiveContainer,
 } from "recharts";
 import { TooltipBlockProps } from "@/types/metric";
-import { format } from "date-fns";
 
 interface LoginData {
 	date: string;

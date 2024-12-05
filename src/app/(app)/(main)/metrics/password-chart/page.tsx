@@ -17,7 +17,6 @@ import {
 } from "recharts";
 
 import { TooltipProps } from "@/types/metric";
-import { format } from "date-fns";
 
 interface PasswordData {
     date: string;

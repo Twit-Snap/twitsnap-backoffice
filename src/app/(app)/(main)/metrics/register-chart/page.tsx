@@ -17,7 +17,6 @@ import {
 } from "recharts";
 
 import { TooltipProps, TooltipWithProviderProps } from "@/types/metric";
-import { format } from "date-fns";
 
 interface RegisterData {
 	date: string;
