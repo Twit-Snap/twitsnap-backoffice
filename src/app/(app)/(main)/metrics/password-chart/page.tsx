@@ -91,13 +91,16 @@ const Page: React.FC = () => {
     }
 
 
-    const chartData = passwordData.map(item => ({
-        date: new Date(item.date).toLocaleDateString(),
-        total: item.recoveryAttempts,
-        successCount: item.successfulRecoveries,
-        failureCount: item.failedRecoveryAttempts,
-        averageTime: item.averageRecoveryTime ?  parseFloat((item.averageRecoveryTime / 1000).toFixed(2)) : 0,
-    }));
+    const chartData = passwordData.map(item => {
+        const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+        return {
+            date: `${year}/${month}/${day}`,
+            total: item.recoveryAttempts,
+            successCount: item.successfulRecoveries,
+            failureCount: item.failedRecoveryAttempts,
+            averageTime: item.averageRecoveryTime ?  parseFloat((item.averageRecoveryTime / 1000).toFixed(2)) : 0,
+        }
+    });
 
 
     const PasswordRecoveryTooltip: React.FC<TooltipProps> = ({ active, payload }) => {

@@ -112,21 +112,28 @@ const Page: React.FC = () => {
 		);
 	}
 
-	const chartData = registerData.map((item) => ({
-		date: new Date(item.date).toLocaleDateString(),
-		total: item.registerUsers,
-		successCount: Math.round(item.registerUsers * item.successRate),
-		failureCount: Math.round(item.registerUsers * (1 - item.successRate)),
-		averageTime: item.averageRegistrationTime
-			? parseFloat((item.averageRegistrationTime / 1000).toFixed(2))
-			: 0,
-	}));
+	const chartData = registerData.map((item) => {
+		const [year, month, day] = new Date().toISOString().split('T')[0].split('-')
+		return{
+			date: `${year}/${month}/${day}`,
+			total: item.registerUsers,
+			successCount: Math.round(item.registerUsers * item.successRate),
+			failureCount: Math.round(item.registerUsers * (1 - item.successRate)),
+			averageTime: item.averageRegistrationTime
+				? parseFloat((item.averageRegistrationTime / 1000).toFixed(2))
+				: 0,
+		}
 
-	const chartWithProviderData = registerWithProviderData.map((item) => ({
-		date: new Date(item.date).toLocaleDateString(),
-		successCount: item.successfulRegisters,
-		successCountWithProvider: item.successfulRegistersWithProvider,
-	}));
+	});
+
+	const chartWithProviderData = registerWithProviderData.map((item) => {
+		const [year, month, day] = new Date().toISOString().split('T')[0].split('-')
+		return {
+			date: `${year}/${month}/${day}`,
+			successCount: item.successfulRegisters,
+			successCountWithProvider: item.successfulRegistersWithProvider,
+		}
+	});
 
 	const RegisterTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
 		if (active && payload && payload.length) {

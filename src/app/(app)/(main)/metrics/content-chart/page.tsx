@@ -14,7 +14,6 @@ import {
 } from "recharts";
 
 import {TooltipTwitsProps} from "@/types/metric";
-import { format } from "date-fns";
 
 interface TwitData {
     dateName: string;
@@ -109,17 +108,21 @@ const Page: React.FC = () => {
         );
     }
 
-    const chartTwitData = twitData.twits.map((item) => ({
-        date: new Date(item.date).toLocaleDateString(),
-        total: item.amount,
+    const chartTwitData = twitData.twits.map((item) => {
+        const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+        return {
+            date: `${year}/${month}/${day}`,
+            total: item.amount,
+        }
+    });
 
-    }));
-
-    const chartData = hashtagData.map((item) => ({
-        date: format(new Date(item.date), "yyyy-MM-dd"),
-        //date: new Date(item.date).toLocaleDateString(),
-        ...item.hashtags,
-    }));
+    const chartData = hashtagData.map((item) => {
+        const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+        return{
+            date: `${year}/${month}/${day}`,
+            ...item.hashtags,
+        }
+    });
 
     const uniqueHashtags = hashtagData.length === 0 ?  [] : Object.keys(hashtagData[0].hashtags);
 
@@ -229,9 +232,6 @@ const Page: React.FC = () => {
                     </ResponsiveContainer>
                 </div>
             </div>
-
-
-
 
 
 

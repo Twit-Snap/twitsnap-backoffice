@@ -111,19 +111,26 @@ const Page: React.FC = () => {
         );
     }
 
-    const chartData = loginData.map(item => ({
-        date: new Date(item.date).toLocaleDateString(),
-        total: item.loginUsers,
-        successCount: item.successfulLogins,
-        failureCount: item.failedLoginAttempts,
-        averageTime: item.averageLoginTime ?  parseFloat((item.averageLoginTime / 1000).toFixed(2)) : 0,
-    }));
+    const chartData = loginData.map(item => {
+        const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+        return {
+            date: `${year}/${month}/${day}`,
+            total: item.loginUsers,
+            successCount: item.successfulLogins,
+            failureCount: item.failedLoginAttempts,
+            averageTime: item.averageLoginTime ?  parseFloat((item.averageLoginTime / 1000).toFixed(2)) : 0,
+        }
 
-    const chartWithProviderData = loginWithProviderData.map(item => ({
-        date: new Date(item.date).toLocaleDateString(),
-        successCount: item.successfulLogins,
-        successCountWithProvider: item.successfulLoginsWithProvider,
-    }));
+    });
+
+    const chartWithProviderData = loginWithProviderData.map(item => {
+        const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+        return {
+            date: `${year}/${month}/${day}`,
+            successCount: item.successfulLogins,
+            successCountWithProvider: item.successfulLoginsWithProvider,
+        }
+    });
 
     const LoginTooltip: React.FC<TooltipProps>  = ({ active, payload }) => {
         if (active && payload && payload.length) {
