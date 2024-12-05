@@ -112,7 +112,7 @@ const Page: React.FC = () => {
     }
 
     const chartData = loginData.map(item => {
-        const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+        const [year, month, day] =item.date.split('T')[0].split('-');
         return {
             date: `${year}/${month}/${day}`,
             total: item.loginUsers,
@@ -124,7 +124,7 @@ const Page: React.FC = () => {
     });
 
     const chartWithProviderData = loginWithProviderData.map(item => {
-        const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+        const [year, month, day] =item.date.split('T')[0].split('-');
         return {
             date: `${year}/${month}/${day}`,
             successCount: item.successfulLogins,

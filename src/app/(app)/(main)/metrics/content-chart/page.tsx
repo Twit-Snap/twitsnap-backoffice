@@ -109,7 +109,7 @@ const Page: React.FC = () => {
     }
 
     const chartTwitData = twitData.twits.map((item) => {
-        const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+        const [year, month, day] =item.date.split('T')[0].split('-');
         return {
             date: `${year}/${month}/${day}`,
             total: item.amount,
@@ -117,7 +117,7 @@ const Page: React.FC = () => {
     });
 
     const chartData = hashtagData.map((item) => {
-        const [year, month, day] = new Date().toISOString().split('T')[0].split('-');
+        const [year, month, day] =item.date.split('T')[0].split('-');
         return{
             date: `${year}/${month}/${day}`,
             ...item.hashtags,
