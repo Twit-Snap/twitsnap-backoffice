@@ -17,7 +17,7 @@ import {TooltipTwitsProps} from "@/types/metric";
 
 interface TwitData {
     dateName: string;
-    date: Date;
+    date: string;
     amount: number;
 }
 
@@ -27,7 +27,7 @@ interface CompleteTwitData {
 }
 
 interface HashtagData {
-    date: Date;
+    date: string;
     hashtags: Record<string, number>;
 }
 
