@@ -114,7 +114,7 @@ const Page: React.FC = () => {
 	}
 
 	const chartData = registerData.map((item) => ({
-		date: format(new Date(item.date), "dd/MM/yyyy"),
+		date: new Date(item.date).toLocaleDateString(),
 		total: item.registerUsers,
 		successCount: Math.round(item.registerUsers * item.successRate),
 		failureCount: Math.round(item.registerUsers * (1 - item.successRate)),
@@ -124,7 +124,7 @@ const Page: React.FC = () => {
 	}));
 
 	const chartWithProviderData = registerWithProviderData.map((item) => ({
-		date: format(new Date(item.date), "dd/MM/yyyy"),
+		date: new Date(item.date).toLocaleDateString(),
 		successCount: item.successfulRegisters,
 		successCountWithProvider: item.successfulRegistersWithProvider,
 	}));

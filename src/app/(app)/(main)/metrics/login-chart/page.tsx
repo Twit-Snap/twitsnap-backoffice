@@ -113,7 +113,7 @@ const Page: React.FC = () => {
     }
 
     const chartData = loginData.map(item => ({
-        date: format(new Date(item.date), "dd/MM/yyyy"),
+        date: new Date(item.date).toLocaleDateString(),
         total: item.loginUsers,
         successCount: item.successfulLogins,
         failureCount: item.failedLoginAttempts,
@@ -121,7 +121,7 @@ const Page: React.FC = () => {
     }));
 
     const chartWithProviderData = loginWithProviderData.map(item => ({
-        date: format(new Date(item.date), "dd/MM/yyyy"),
+        date: new Date(item.date).toLocaleDateString(),
         successCount: item.successfulLogins,
         successCountWithProvider: item.successfulLoginsWithProvider,
     }));

@@ -110,13 +110,13 @@ const Page: React.FC = () => {
     }
 
     const chartTwitData = twitData.twits.map((item) => ({
-        date: format(new Date(item.date), "dd/MM/yyyy"),
+        date: new Date(item.date).toLocaleDateString(),
         total: item.amount,
 
     }));
 
     const chartData = hashtagData.map((item) => ({
-        date: format(new Date(item.date), "yyyy-MM-dd"),
+        date: new Date(item.date).toLocaleDateString(),
         ...item.hashtags,
     }));
 
@@ -132,7 +132,6 @@ const Page: React.FC = () => {
                     className="custom-tooltip"
                     style={{
                         backgroundColor: "#333",
-                        color: "#fff",
                         padding: "10px",
                         borderRadius: "5px",
                         border: "1px solid #ccc",
@@ -147,7 +146,7 @@ const Page: React.FC = () => {
         }
         return null;
     };
-
+    console.log(chartData);
     return (
         <div style={{padding: "20px"}}>
             <h2
@@ -284,7 +283,7 @@ const Page: React.FC = () => {
                                 }}
                                 allowDecimals={false}
                             />
-                            <Tooltip  />
+                            <Tooltip  contentStyle={{  backgroundColor: "#333", color: "#333", borderRadius: "5px" }}/>
 
                             {/* Generar dinámicamente las líneas */}
                             {uniqueHashtags.map((hashtag) => (

@@ -77,7 +77,7 @@ const Page: React.FC = () => {
 	}
 
 	const chartData = data.map((item) => ({
-		date: format(new Date(item.date), "dd/MM/yyyy"),
+		date: new Date(item.date).toLocaleDateString(),
 		blockedUsersCount: item.blockedUsers,
 	}));
 	const BlockedTooltip: React.FC<TooltipBlockProps> = ({
