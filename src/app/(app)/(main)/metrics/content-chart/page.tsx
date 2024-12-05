@@ -14,7 +14,7 @@ import {
 } from "recharts";
 
 import {TooltipTwitsProps} from "@/types/metric";
-
+import { format } from "date-fns";
 
 interface TwitData {
     dateName: string;
@@ -116,7 +116,8 @@ const Page: React.FC = () => {
     }));
 
     const chartData = hashtagData.map((item) => ({
-        date: new Date(item.date).toLocaleDateString(),
+        date: format(new Date(item.date), "yyyy-MM-dd"),
+        //date: new Date(item.date).toLocaleDateString(),
         ...item.hashtags,
     }));
 
