@@ -167,13 +167,12 @@ const Page: React.FC = () => {
                     textAlign: "right",
                     marginBottom: "20px",
                     padding: "10px",
-                    backgroundColor: "#f0f0f0",
                     borderRadius: "8px",
                 }}>
                 <h3
                     style={{
                         fontSize: "18px",
-                        color: "#333",
+                        color: "#b6b4b4",
                         marginBottom: "5px",
                         marginRight: "30px",
                         fontWeight: "bold"
@@ -253,7 +252,6 @@ const Page: React.FC = () => {
                     textAlign: "right",
                     marginBottom: "20px",
                     padding: "10px",
-                    backgroundColor: "#f0f0f0",
                     borderRadius: "8px",
                 }}>
                 <div style={{width: "100%", height: 400}}>
