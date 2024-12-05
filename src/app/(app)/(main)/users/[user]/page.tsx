@@ -79,9 +79,10 @@ export default function User({ params }: { params: { user: string } }) {
 		<div className="mx-10 py-6 h-full flex flex-row rounded-full">
 			<div className="pr-10 mr-10 h-full rounded-full overflow-hidden">
 				<Avatar
-					src={user.profilePicture? user.profilePicture: default_avatar.src}
-					className="lg:h-[10rem] lg:w-[10rem] md:h-[7.5rem] md:w-[7.5rem] sm:h-[5rem] sm:w-[5rem]"
+					src={user.profilePicture ? user.profilePicture : default_avatar.src}
+					className="lg:h-[10rem] lg:w-[10rem] md:h-[7.5rem] md:w-[7.5rem] sm:h-[5rem] sm:w-[5rem] object-cover rounded-full"
 				/>
+
 			</div>
 			<div className="w-full bg-[#868686] shadow rounded-r-md border-gray border-l-2">
 				<List
